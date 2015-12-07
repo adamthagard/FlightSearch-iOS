@@ -7,6 +7,10 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		423B6F3F1C153DA600EBA335 /* FlightStatsCommunicator.m in Sources */ = {isa = PBXBuildFile; fileRef = 423B6F3E1C153DA600EBA335 /* FlightStatsCommunicator.m */; };
+		424845371C112BD8002686EC /* FlightsTableViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 424845361C112BD8002686EC /* FlightsTableViewController.m */; };
+		4248453A1C1136E5002686EC /* FlightStatus.m in Sources */ = {isa = PBXBuildFile; fileRef = 424845391C1136E5002686EC /* FlightStatus.m */; };
+		4248453D1C113FFA002686EC /* FlightStatusTableViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 4248453C1C113FFA002686EC /* FlightStatusTableViewCell.m */; };
 		427B9DD51C110EED0056F625 /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = 427B9DD41C110EED0056F625 /* main.m */; };
 		427B9DD81C110EED0056F625 /* AppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = 427B9DD71C110EED0056F625 /* AppDelegate.m */; };
 		427B9DDB1C110EED0056F625 /* ViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 427B9DDA1C110EED0056F625 /* ViewController.m */; };
@@ -27,6 +31,14 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
+		423B6F3D1C153DA600EBA335 /* FlightStatsCommunicator.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = FlightStatsCommunicator.h; sourceTree = "<group>"; };
+		423B6F3E1C153DA600EBA335 /* FlightStatsCommunicator.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = FlightStatsCommunicator.m; sourceTree = "<group>"; };
+		424845351C112BD7002686EC /* FlightsTableViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = FlightsTableViewController.h; sourceTree = "<group>"; };
+		424845361C112BD8002686EC /* FlightsTableViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = FlightsTableViewController.m; sourceTree = "<group>"; };
+		424845381C1136E5002686EC /* FlightStatus.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = FlightStatus.h; sourceTree = "<group>"; };
+		424845391C1136E5002686EC /* FlightStatus.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = FlightStatus.m; sourceTree = "<group>"; };
+		4248453B1C113FFA002686EC /* FlightStatusTableViewCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = FlightStatusTableViewCell.h; sourceTree = "<group>"; };
+		4248453C1C113FFA002686EC /* FlightStatusTableViewCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = FlightStatusTableViewCell.m; sourceTree = "<group>"; };
 		427B9DCF1C110EED0056F625 /* FlightSearch.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = FlightSearch.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		427B9DD31C110EED0056F625 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		427B9DD41C110EED0056F625 /* main.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = main.m; sourceTree = "<group>"; };
@@ -86,6 +98,14 @@
 				427B9DD91C110EED0056F625 /* ViewController.h */,
 				427B9DDA1C110EED0056F625 /* ViewController.m */,
 				427B9DDC1C110EED0056F625 /* Main.storyboard */,
+				424845351C112BD7002686EC /* FlightsTableViewController.h */,
+				424845361C112BD8002686EC /* FlightsTableViewController.m */,
+				424845381C1136E5002686EC /* FlightStatus.h */,
+				424845391C1136E5002686EC /* FlightStatus.m */,
+				4248453B1C113FFA002686EC /* FlightStatusTableViewCell.h */,
+				4248453C1C113FFA002686EC /* FlightStatusTableViewCell.m */,
+				423B6F3D1C153DA600EBA335 /* FlightStatsCommunicator.h */,
+				423B6F3E1C153DA600EBA335 /* FlightStatsCommunicator.m */,
 				427B9DDF1C110EED0056F625 /* Images.xcassets */,
 				427B9DE11C110EED0056F625 /* LaunchScreen.xib */,
 				427B9DD21C110EED0056F625 /* Supporting Files */,
@@ -221,7 +241,11 @@
 			files = (
 				427B9DDB1C110EED0056F625 /* ViewController.m in Sources */,
 				427B9DD81C110EED0056F625 /* AppDelegate.m in Sources */,
+				4248453A1C1136E5002686EC /* FlightStatus.m in Sources */,
+				4248453D1C113FFA002686EC /* FlightStatusTableViewCell.m in Sources */,
 				427B9DD51C110EED0056F625 /* main.m in Sources */,
+				424845371C112BD8002686EC /* FlightsTableViewController.m in Sources */,
+				423B6F3F1C153DA600EBA335 /* FlightStatsCommunicator.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -297,7 +321,7 @@
 				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
 				GCC_WARN_UNUSED_FUNCTION = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
-				IPHONEOS_DEPLOYMENT_TARGET = 8.2;
+				IPHONEOS_DEPLOYMENT_TARGET = 8.0;
 				MTL_ENABLE_DEBUG_INFO = YES;
 				ONLY_ACTIVE_ARCH = YES;
 				SDKROOT = iphoneos;
@@ -333,7 +357,7 @@
 				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
 				GCC_WARN_UNUSED_FUNCTION = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
-				IPHONEOS_DEPLOYMENT_TARGET = 8.2;
+				IPHONEOS_DEPLOYMENT_TARGET = 8.0;
 				MTL_ENABLE_DEBUG_INFO = NO;
 				SDKROOT = iphoneos;
 				TARGETED_DEVICE_FAMILY = "1,2";
@@ -346,6 +370,7 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				INFOPLIST_FILE = FlightSearch/Info.plist;
+				IPHONEOS_DEPLOYMENT_TARGET = 8.0;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				PRODUCT_NAME = "$(TARGET_NAME)";
 			};
@@ -356,6 +381,7 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				INFOPLIST_FILE = FlightSearch/Info.plist;
+				IPHONEOS_DEPLOYMENT_TARGET = 8.0;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				PRODUCT_NAME = "$(TARGET_NAME)";
 			};
@@ -414,6 +440,7 @@
 				427B9DF41C110EED0056F625 /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
 		};
 		427B9DF51C110EED0056F625 /* Build configuration list for PBXNativeTarget "FlightSearchTests" */ = {
 			isa = XCConfigurationList;
@@ -422,6 +449,7 @@
 				427B9DF71C110EED0056F625 /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
 		};
 /* End XCConfigurationList section */
 	};
