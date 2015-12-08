@@ -68,7 +68,7 @@
 
 
 - (void)receiveFlightStatsJSON:(NSData *)data forFlightStatusSearch:(FlightStatusSearch*)flightStatusSearch{
-    NSLog(@"data: %@",data);
+//    NSLog(@"data: %@",data);
     
     NSError *localError = nil;
     NSDictionary *parsedObject = [NSJSONSerialization JSONObjectWithData:data options:0 error:&localError];

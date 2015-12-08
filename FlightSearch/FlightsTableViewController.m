@@ -35,6 +35,8 @@ static NSString *CellIdentifier = @"CellIdentifier";
         label.text = titleText;
         
         self.navigationItem.titleView = label;
+        
+        [self updateLastUpdatedLabel];
     }
     return self;
 }
@@ -49,13 +51,16 @@ static NSString *CellIdentifier = @"CellIdentifier";
     
     [self.tableView setRowHeight:204];
     
-    
-
+    self.refreshControl = [[UIRefreshControl alloc] init];
+    [self.refreshControl addTarget:self action:@selector(refresh) forControlEvents:UIControlEventValueChanged];
+    [self.tableView addSubview:self.refreshControl]; //assumes tableView is @property
     
     // Uncomment the following line to display an Edit button in the navigation bar for this view controller.
 //     self.navigationItem.rightBarButtonItem = self.editButtonItem;
     
-    
+    // initialize communicator to interact with flight stats API and return results here
+    _communicator = [[FlightStatsCommunicator alloc] init];
+    _communicator.delegate = self;
 }
 
 - (void)viewWillAppear:(BOOL)animated
@@ -78,6 +83,63 @@ static NSString *CellIdentifier = @"CellIdentifier";
     [super didReceiveMemoryWarning];
     // Dispose of any resources that can be recreated.
 }
+
+#pragma refresh control
+
+-(void)refresh {
+    NSLog(@"refresh results");
+    
+    self.refreshControl.attributedTitle = [[NSAttributedString alloc] initWithString:@"Refreshing..."];
+    
+    [self.communicator searchFlights:flightStatusSearch];
+}
+
+
+- (void)updateLastUpdatedLabel{
+    // update last updated label
+    NSDateFormatter *formatter = [[NSDateFormatter alloc] init];
+    [formatter setDateFormat:@"MMM d, h:mm a"];
+    NSString *lastUpdated = [NSString stringWithFormat:@"Last updated on %@",[formatter stringFromDate:flightStatusSearch.lastUpdated]];
+    self.refreshControl.attributedTitle = [[NSAttributedString alloc] initWithString:lastUpdated];
+}
+
+#pragma FlightStatsCommunicatorDelegate
+
+- (void)didReceiveFlightStatuses:(FlightStatusSearch *)completedFlightStatusSearch{
+    
+    flightStatusSearch = completedFlightStatusSearch;
+    
+    [self.tableView reloadData];
+
+    [self.refreshControl endRefreshing];
+    
+    [self updateLastUpdatedLabel];
+}
+
+
+- (void)fetchingFlightStatusesFailedWithError:(NSError *)error{
+        
+    if (error.code == -1009){
+        UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"No network connection"
+                                                        message:@"You must be connected to the internet to use this app."
+                                                       delegate:nil
+                                              cancelButtonTitle:@"OK"
+                                              otherButtonTitles:nil];
+        [alert show];
+    }
+    else {
+        UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"An unkown error occurred"
+                                                        message:@""
+                                                       delegate:nil
+                                              cancelButtonTitle:@"OK"
+                                              otherButtonTitles:nil];
+        [alert show];
+    }
+    
+    [self.refreshControl endRefreshing];
+    [self updateLastUpdatedLabel];
+}
+
 
 #pragma mark - Table view data source
 

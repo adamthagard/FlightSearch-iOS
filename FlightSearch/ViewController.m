@@ -96,7 +96,6 @@
     newFlightStatusSearch.flightNumber = flightNumberTextField.text;
     newFlightStatusSearch.searchDate = selectedDate;
     
-//    [self.communicator searchFlightsWithAirline:airlineCodeTextField.text flightNumber:flightNumberTextField.text date:selectedDate];
     [self.communicator searchFlights:newFlightStatusSearch];
     
     

@@ -10,10 +10,15 @@
 #import "FlightStatus.h"
 #import "FlightStatusTableViewCell.h"
 #import "FlightStatusSearch.h"
+#import "FlightStatsCommunicator.h"
+#import "FlightStatsCommunicatorDelegate.h"
 
-@interface FlightsTableViewController : UITableViewController{
+@interface FlightsTableViewController : UITableViewController<FlightStatsCommunicatorDelegate>{
     FlightStatusSearch *flightStatusSearch;
 }
+
+@property (strong, nonatomic) FlightStatsCommunicator *communicator;
+@property (nonatomic, strong) UIRefreshControl *refreshControl;
 
 - (id)initWithFlightSearchResults:(FlightStatusSearch*)newFlightStatusSearchResults;
 
