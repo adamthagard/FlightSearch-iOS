@@ -43,6 +43,7 @@
     
 }
 
+
 - (void) dateUpdated:(UIDatePicker *)datePicker {
     [self updateDateTextField:datePicker.date];
 }
@@ -68,6 +69,8 @@
 - (void)viewWillAppear:(BOOL)animated {
     [self.navigationController setNavigationBarHidden:YES animated:animated];
     [super viewWillAppear:animated];
+    
+    [loadingView removeFromSuperview];
 }
 - (void)viewWillDisappear:(BOOL)animated {
     [self.navigationController setNavigationBarHidden:NO animated:animated];
@@ -97,7 +100,17 @@
     [self.communicator searchFlights:newFlightStatusSearch];
     
     
-//    uivi
+    loadingView = [[UIView alloc] initWithFrame:self.view.frame];
+    loadingView.backgroundColor = [UIColor colorWithRed:0.0 green:0.0 blue:0.0 alpha:0.4];
+    float spinnerSize = 100.0;
+    float scalefactor = spinnerSize / 36.0;
+    UIActivityIndicatorView *activityIndicator = [[UIActivityIndicatorView alloc] initWithFrame:CGRectMake(loadingView.frame.origin.x+loadingView.frame.size.width/2-spinnerSize/2, loadingView.frame.size.height/2-spinnerSize/2, spinnerSize, spinnerSize)];
+    [activityIndicator setActivityIndicatorViewStyle:UIActivityIndicatorViewStyleWhiteLarge];
+    CGAffineTransform transform = CGAffineTransformMakeScale(scalefactor, scalefactor);
+    activityIndicator.transform = transform;
+    [activityIndicator startAnimating];
+    [loadingView addSubview:activityIndicator];
+    [self.view addSubview:loadingView];
 }
 
 - (IBAction)resignKeyboard:(id)sender{
@@ -108,13 +121,43 @@
 
 - (void)didReceiveFlightStatuses:(FlightStatusSearch *)completedFlightStatusSearch{
 
-    FlightsTableViewController *flightsVC = [[FlightsTableViewController alloc] initWithFlightSearchResults:completedFlightStatusSearch];
-    [self.navigationController pushViewController:flightsVC animated:YES];
+    if ([completedFlightStatusSearch.flightStatusesArray count] > 0){
+        FlightsTableViewController *flightsVC = [[FlightsTableViewController alloc] initWithFlightSearchResults:completedFlightStatusSearch];
+        [self.navigationController pushViewController:flightsVC animated:YES];
+    }
+    else{
+        [loadingView removeFromSuperview];
+
+        UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"No flights found"
+                                                        message:@"Please enter a valid airline code and flight number"
+                                                       delegate:nil
+                                              cancelButtonTitle:@"OK"
+                                              otherButtonTitles:nil];
+        [alert show];
+    }
 }
 
 
 - (void)fetchingFlightStatusesFailedWithError:(NSError *)error{
-    NSLog(@"ERROR");
+    
+    [loadingView removeFromSuperview];    
+    
+    if (error.code == -1009){
+        UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"No network connection"
+                                                    message:@"You must be connected to the internet to use this app."
+                                                   delegate:nil
+                                          cancelButtonTitle:@"OK"
+                                          otherButtonTitles:nil];
+        [alert show];
+    }
+    else {
+        UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"An unkown error occurred"
+                                                        message:@""
+                                                       delegate:nil
+                                              cancelButtonTitle:@"OK"
+                                              otherButtonTitles:nil];
+        [alert show];
+    }
 }
 
 

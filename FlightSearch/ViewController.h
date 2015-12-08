@@ -17,6 +17,8 @@
     IBOutlet UITextField *flightNumberTextField;
     IBOutlet UITextField *dateTextField;
    
+    UIView *loadingView;
+    
     NSDate *selectedDate;
 }
 

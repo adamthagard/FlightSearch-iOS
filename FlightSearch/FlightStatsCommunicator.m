@@ -117,7 +117,12 @@
             NSTimeInterval flightDuration = [flightEndUTC timeIntervalSinceDate:flightStartUTC];
             NSTimeInterval flightElapsed = [currTimeUTC timeIntervalSinceDate:flightStartUTC];
             flightStatus.flightProgress = flightElapsed / flightDuration;
+         
+            NSTimeInterval timeRemaining = [flightEndUTC timeIntervalSinceDate:currTimeUTC];
+            int hoursRemaining = timeRemaining / 3600;
+            int minutesRemaining = (timeRemaining - hoursRemaining*3600)/60;
             
+            flightStatus.status = [NSString stringWithFormat:@"%@ (%d hours, %d minutes remaining)",flightStatus.status,hoursRemaining,minutesRemaining];
         }
         
         
@@ -172,9 +177,12 @@
 
 
 - (void)requestFailedWithError:(NSError *)error{
-//    NSLog(@"Error %@; %@", error, [error localizedDescription]);
+    NSLog(@"Error %@; %@", error, [error localizedDescription]);
     
-    [self.delegate fetchingFlightStatusesFailedWithError:error];
+    dispatch_async(dispatch_get_main_queue(), ^{
+        [self.delegate fetchingFlightStatusesFailedWithError:error];
+    });
+
 }
 
 
