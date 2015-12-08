@@ -16,27 +16,19 @@ static NSString *CellIdentifier = @"CellIdentifier";
 
 @implementation FlightsTableViewController
 
-- (id)initWithFlightSearchResults:(FlightStatusSearch*)newFlightStatusSearchResults {
+- (id)initWithFlightSearchResults:(FlightStatusSearch*)newFlightStatusSearchResults andRefresh:(BOOL)shouldRefresh {
     self = [super init];
     if (self) {
+        
         flightStatusSearch = [[FlightStatusSearch alloc] initWithFlightStatusSearch:newFlightStatusSearchResults];
         
-//        self.navigationItem.title = [NSString stringWithFormat:@"%@%@",flightStatusSearch.airlineCode,flightStatusSearch.flightNumber];
+        [self saveFlightSearch];
+        
+        if (shouldRefresh){
+            [self.refreshControl beginRefreshing];
 
-        NSString *titleText = [NSString stringWithFormat:@"%@%@",flightStatusSearch.airlineCode,flightStatusSearch.flightNumber];
-        
-//        CGRect frame = CGRectMake(0, 0, [titleText sizeWithFont:[UIFont boldSystemFontOfSize:24.0]].width, 44);
-        CGRect frame = CGRectMake(0, 0, [titleText sizeWithAttributes:@{NSFontAttributeName: [UIFont boldSystemFontOfSize:24.0]}].width, 44);
-        UILabel *label = [[UILabel alloc] initWithFrame:frame];
-        label.backgroundColor = [UIColor clearColor];
-        label.font = [UIFont boldSystemFontOfSize:24.0];
-        label.textAlignment = NSTextAlignmentCenter;
-        label.textColor = [UIColor blackColor];
-        label.text = titleText;
-        
-        self.navigationItem.titleView = label;
-        
-        [self updateLastUpdatedLabel];
+            [self refresh];
+        }
     }
     return self;
 }
@@ -48,15 +40,13 @@ static NSString *CellIdentifier = @"CellIdentifier";
     // Register Class for Cell Reuse Identifier
     [self.tableView registerClass:[FlightStatusTableViewCell class] forCellReuseIdentifier:CellIdentifier];
     
-    
+    // configure tableview
     [self.tableView setRowHeight:204];
     
+    // set up pull to refresh
     self.refreshControl = [[UIRefreshControl alloc] init];
     [self.refreshControl addTarget:self action:@selector(refresh) forControlEvents:UIControlEventValueChanged];
     [self.tableView addSubview:self.refreshControl]; //assumes tableView is @property
-    
-    // Uncomment the following line to display an Edit button in the navigation bar for this view controller.
-//     self.navigationItem.rightBarButtonItem = self.editButtonItem;
     
     // initialize communicator to interact with flight stats API and return results here
     _communicator = [[FlightStatsCommunicator alloc] init];
@@ -66,22 +56,36 @@ static NSString *CellIdentifier = @"CellIdentifier";
 - (void)viewWillAppear:(BOOL)animated
 {
     [super viewWillAppear:animated];
-    [self.navigationController.navigationBar setTitleTextAttributes:
-     [NSDictionary dictionaryWithObjectsAndKeys:
-      [UIFont boldSystemFontOfSize:16.0f], NSFontAttributeName,
-      nil]];
     
+    // set up navbar title
+    NSString *titleText = [NSString stringWithFormat:@"%@%@",flightStatusSearch.airlineCode,flightStatusSearch.flightNumber];
+    CGRect frame = CGRectMake(0, 0, [titleText sizeWithAttributes:@{NSFontAttributeName: [UIFont boldSystemFontOfSize:24.0]}].width, 44);
+    UILabel *label = [[UILabel alloc] initWithFrame:frame];
+    label.backgroundColor = [UIColor clearColor];
+    label.font = [UIFont boldSystemFontOfSize:24.0];
+    label.textAlignment = NSTextAlignmentCenter;
+    label.textColor = [UIColor blackColor];
+    label.text = titleText;
+    self.navigationItem.titleView = label;
     
-//    [self.navigationController.navigationBar setBackgroundColor:[UIColor blueColor]];
-//    [self.navigationController.navigationBar setBarTintColor:[UIColor colorWithRed:0.0 green:67.0/255.0 blue:139.0/255.0 alpha:1.0]];
     [self.navigationController.navigationBar setTintColor:[UIColor darkGrayColor]];
-//    [self.navigationController.navigationBar set:[UIColor lightGrayColor]];
+    
+    [self updateLastUpdatedLabel];
 }
 
 
 - (void)didReceiveMemoryWarning {
     [super didReceiveMemoryWarning];
     // Dispose of any resources that can be recreated.
+}
+
+- (void) saveFlightSearch{
+    NSLog(@"saving search: %@ with flight: %@%@",flightStatusSearch,flightStatusSearch.airlineCode,flightStatusSearch.flightNumber);
+
+    NSData *encodedObject = [NSKeyedArchiver archivedDataWithRootObject:flightStatusSearch];
+    NSUserDefaults *defaults = [NSUserDefaults standardUserDefaults];
+    [defaults setObject:encodedObject forKey:@"LastFlightSearch"];
+    [defaults synchronize];
 }
 
 #pragma refresh control
@@ -108,7 +112,8 @@ static NSString *CellIdentifier = @"CellIdentifier";
 - (void)didReceiveFlightStatuses:(FlightStatusSearch *)completedFlightStatusSearch{
     
     flightStatusSearch = completedFlightStatusSearch;
-    
+    [self saveFlightSearch];
+
     [self.tableView reloadData];
 
     [self.refreshControl endRefreshing];
@@ -121,7 +126,7 @@ static NSString *CellIdentifier = @"CellIdentifier";
         
     if (error.code == -1009){
         UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"No network connection"
-                                                        message:@"You must be connected to the internet to use this app."
+                                                        message:@"You must be connected to refresh results."
                                                        delegate:nil
                                               cancelButtonTitle:@"OK"
                                               otherButtonTitles:nil];
@@ -179,12 +184,6 @@ static NSString *CellIdentifier = @"CellIdentifier";
     
     [cell.departureTerminalLabel setText:[NSString stringWithFormat:@"Terminal %@, Gate %@",[(FlightStatus*)[flightStatuses objectAtIndex:indexPath.row] departureTerminal],[(FlightStatus*)[flightStatuses objectAtIndex:indexPath.row] departureGate]]];
     [cell.arrivalTerminalLabel setText:[NSString stringWithFormat:@"Terminal %@, Gate %@",[(FlightStatus*)[flightStatuses objectAtIndex:indexPath.row] arrivalTerminal],[(FlightStatus*)[flightStatuses objectAtIndex:indexPath.row] arrivalGate]]];
-   
-//    [cell.departureTerminalLabel setText:[NSString stringWithFormat:@"Terminal: %d",[(FlightStatus*)[flightStatuses objectAtIndex:indexPath.row] departureTerminal]]];
-//    [cell.arrivalTerminalLabel setText:[NSString stringWithFormat:@"Terminal: %d",[(FlightStatus*)[flightStatuses objectAtIndex:indexPath.row] arrivalTerminal]]];
-    
-//    [cell.departureGateLabel setText:[NSString stringWithFormat:@"Gate: %d",[(FlightStatus*)[flightStatuses objectAtIndex:indexPath.row] departureGate]]];
-//    [cell.arrivalGateLabel setText:[NSString stringWithFormat:@"Gate: %d",[(FlightStatus*)[flightStatuses objectAtIndex:indexPath.row] arrivalGate]]];
     
     cell.selectionStyle = UITableViewCellSelectionStyleNone;
 
@@ -201,48 +200,5 @@ static NSString *CellIdentifier = @"CellIdentifier";
     [self.tableView reloadData];
 }
 
-/*
-// Override to support conditional editing of the table view.
-- (BOOL)tableView:(UITableView *)tableView canEditRowAtIndexPath:(NSIndexPath *)indexPath {
-    // Return NO if you do not want the specified item to be editable.
-    return YES;
-}
-*/
-
-/*
-// Override to support editing the table view.
-- (void)tableView:(UITableView *)tableView commitEditingStyle:(UITableViewCellEditingStyle)editingStyle forRowAtIndexPath:(NSIndexPath *)indexPath {
-    if (editingStyle == UITableViewCellEditingStyleDelete) {
-        // Delete the row from the data source
-        [tableView deleteRowsAtIndexPaths:@[indexPath] withRowAnimation:UITableViewRowAnimationFade];
-    } else if (editingStyle == UITableViewCellEditingStyleInsert) {
-        // Create a new instance of the appropriate class, insert it into the array, and add a new row to the table view
-    }   
-}
-*/
-
-/*
-// Override to support rearranging the table view.
-- (void)tableView:(UITableView *)tableView moveRowAtIndexPath:(NSIndexPath *)fromIndexPath toIndexPath:(NSIndexPath *)toIndexPath {
-}
-*/
-
-/*
-// Override to support conditional rearranging of the table view.
-- (BOOL)tableView:(UITableView *)tableView canMoveRowAtIndexPath:(NSIndexPath *)indexPath {
-    // Return NO if you do not want the item to be re-orderable.
-    return YES;
-}
-*/
-
-/*
-#pragma mark - Navigation
-
-// In a storyboard-based application, you will often want to do a little preparation before navigation
-- (void)prepareForSegue:(UIStoryboardSegue *)segue sender:(id)sender {
-    // Get the new view controller using [segue destinationViewController].
-    // Pass the selected object to the new view controller.
-}
-*/
 
 @end

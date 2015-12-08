@@ -22,4 +22,38 @@
     return self;
 }
 
+
+- (BOOL)isSameSearchAs:(FlightStatusSearch*)otherFlightStatusSearch{
+    if ([self.airlineCode isEqualToString:otherFlightStatusSearch.airlineCode]
+        && [self.flightNumber isEqualToString:otherFlightStatusSearch.flightNumber]
+        && [self.searchDate isEqualToDate:otherFlightStatusSearch.searchDate])
+        return YES;
+    else
+        return NO;
+}
+
+
+# pragma nscoding
+
+- (void)encodeWithCoder:(NSCoder *)encoder {
+    //Encode properties, other class variables, etc
+    [encoder encodeObject:self.airlineCode forKey:@"airlineCode"];
+    [encoder encodeObject:self.flightNumber forKey:@"flightNumber"];
+    [encoder encodeObject:self.searchDate forKey:@"searchDate"];
+    [encoder encodeObject:self.flightStatusesArray forKey:@"flightStatusesArray"];
+    [encoder encodeObject:self.lastUpdated forKey:@"lastUpdated"];
+}
+
+- (id)initWithCoder:(NSCoder *)decoder {
+    if((self = [super init])) {
+        //decode properties, other class vars
+        self.airlineCode = [decoder decodeObjectForKey:@"airlineCode"];
+        self.flightNumber = [decoder decodeObjectForKey:@"flightNumber"];
+        self.searchDate = [decoder decodeObjectForKey:@"searchDate"];
+        self.flightStatusesArray = [decoder decodeObjectForKey:@"flightStatusesArray"];
+        self.lastUpdated = [decoder decodeObjectForKey:@"lastUpdated"];
+    }
+    return self;
+}
+
 @end

@@ -20,5 +20,6 @@
 
 
 - (id)initWithFlightStatusSearch:(FlightStatusSearch*)otherFlightStatusSearch;
+- (BOOL)isSameSearchAs:(FlightStatusSearch*)otherFlightStatusSearch;
 
 @end

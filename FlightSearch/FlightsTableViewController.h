@@ -20,6 +20,6 @@
 @property (strong, nonatomic) FlightStatsCommunicator *communicator;
 @property (nonatomic, strong) UIRefreshControl *refreshControl;
 
-- (id)initWithFlightSearchResults:(FlightStatusSearch*)newFlightStatusSearchResults;
+- (id)initWithFlightSearchResults:(FlightStatusSearch*)newFlightStatusSearchResults andRefresh:(BOOL)shouldRefresh;
 
 @end
