@@ -14,10 +14,13 @@
     NSDateFormatter *flightStatsDF;
     NSDateFormatter *dayDF;
     NSDateFormatter *timeDF;
+    NSDateFormatter *urlDF;
+    
+    NSDictionary *flightStatusDescriptions;
 }
 
 @property (weak, nonatomic) id<FlightStatsCommunicatorDelegate> delegate;
 
-- (void)searchFlightsWithAirline:(NSString*)airlineCode flightNumber:(NSString*)flightNumber date:(NSString*)date;
+- (void)searchFlightsWithAirline:(NSString*)airlineCode flightNumber:(NSString*)flightNumber date:(NSDate*)date;
 
 @end

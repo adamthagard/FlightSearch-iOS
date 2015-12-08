@@ -21,15 +21,32 @@
         
         timeDF = [[NSDateFormatter alloc] init];
         [timeDF setDateFormat:@"h:mm a"];
+        
+        urlDF = [[NSDateFormatter alloc] init];
+        [urlDF setDateFormat:@"yyyy'/'MM'/'dd"];
+        
+        flightStatusDescriptions = [NSDictionary dictionaryWithObjectsAndKeys:
+                                    @"En-Route", @"A",
+                                    @"Canceled", @"C",
+                                    @"Diverted", @"D",
+                                    @"Data Source Needed", @"DN",
+                                    @"Landed", @"L",
+                                    @"Not Operational", @"NO",
+                                    @"Redirected", @"R",
+                                    @"Scheduled", @"S",
+                                    @"Unknown", @"U",
+                                          nil];
     }
     return self;
 }
 
 
 
-- (void)searchFlightsWithAirline:(NSString*)airlineCode flightNumber:(NSString*)flightNumber date:(NSString*)date{
+- (void)searchFlightsWithAirline:(NSString*)airlineCode flightNumber:(NSString*)flightNumber date:(NSDate*)date{
     
-    NSString *urlAsString = [NSString stringWithFormat:@"https://api.flightstats.com/flex/flightstatus/rest/v2/json/flight/status/%@/%@/dep/2015/12/4?appId=5a72befd&appKey=36550fa3c22e6d88762d8efc1923a952&utc=false",airlineCode,flightNumber];
+    NSString *urlFormattedDate = [urlDF stringFromDate:date];
+    
+    NSString *urlAsString = [NSString stringWithFormat:@"https://api.flightstats.com/flex/flightstatus/rest/v2/json/flight/status/%@/%@/dep/%@?appId=5a72befd&appKey=36550fa3c22e6d88762d8efc1923a952&utc=false",airlineCode,flightNumber,urlFormattedDate];
 //    NSString *urlAsString = [NSString stringWithFormat:@"https://api.flightstats.com/flex/flightstatus/rest/v2/json/flight/status/AA/138/dep/2015/12/4?appId=5a72befd&appKey=36550fa3c22e6d88762d8efc1923a952&utc=false"];
     NSURL *url = [[NSURL alloc] initWithString:urlAsString];
     NSLog(@"%@", urlAsString);
@@ -75,7 +92,7 @@
         
         FlightStatus *flightStatus = [[FlightStatus alloc] init];
         
-        flightStatus.status = [currFlightStatusJSON objectForKey:@"status"];
+        flightStatus.status = [flightStatusDescriptions objectForKey:[currFlightStatusJSON objectForKey:@"status"]];
 
         flightStatus.departureAirport = [currFlightStatusJSON objectForKey:@"departureAirportFsCode"];
         flightStatus.arrivalAirport = [currFlightStatusJSON objectForKey:@"arrivalAirportFsCode"];
@@ -85,24 +102,33 @@
 
         NSDictionary *operationalTimes = [currFlightStatusJSON objectForKey:@"operationalTimes"];
         
-        NSDate *departureDate = [flightStatsDF dateFromString:[[operationalTimes objectForKey:@"actualGateDeparture"] objectForKey:@"dateLocal"]];
-        flightStatus.departureDate = [dayDF stringFromDate:departureDate];
-        flightStatus.departureTime = [timeDF stringFromDate:departureDate];
+        
         NSDate *departureScheduledDate = [flightStatsDF dateFromString:[[operationalTimes objectForKey:@"scheduledGateDeparture"] objectForKey:@"dateLocal"]];
         flightStatus.departureScheduledTime = [timeDF stringFromDate:departureScheduledDate];
+        
+        NSDate *departureDate = departureScheduledDate;
+        if ([operationalTimes objectForKey:@"estimatedGateDeparture"])
+            departureDate = [flightStatsDF dateFromString:[[operationalTimes objectForKey:@"estimatedGateDeparture"] objectForKey:@"dateLocal"]];
+        flightStatus.departureDate = [dayDF stringFromDate:departureDate];
+        flightStatus.departureTime = [timeDF stringFromDate:departureDate];
+        
 
-        NSDate *arrivalDate = [flightStatsDF dateFromString:[[operationalTimes objectForKey:@"actualGateDeparture"] objectForKey:@"dateLocal"]];
-        flightStatus.arrivalDate = [dayDF stringFromDate:arrivalDate];
-        flightStatus.arrivalTime = [timeDF stringFromDate:arrivalDate];
         NSDate *arrivalScheduledDate = [flightStatsDF dateFromString:[[operationalTimes objectForKey:@"scheduledGateArrival"] objectForKey:@"dateLocal"]];
         flightStatus.arrivalScheduledTime = [timeDF stringFromDate:arrivalScheduledDate];
+        
+        NSDate *arrivalDate = arrivalScheduledDate;
+        if ([operationalTimes objectForKey:@"estimatedGateArrival"])
+            arrivalDate = [flightStatsDF dateFromString:[[operationalTimes objectForKey:@"estimatedGateArrival"] objectForKey:@"dateLocal"]];
+        flightStatus.arrivalDate = [dayDF stringFromDate:arrivalDate];
+        flightStatus.arrivalTime = [timeDF stringFromDate:arrivalDate];
+        
 
         NSDictionary *airportResources = [currFlightStatusJSON objectForKey:@"airportResources"];
         
-        flightStatus.departureTerminal = [airportResources objectForKey:@"departureTerminal"];
-        flightStatus.departureGate = [airportResources objectForKey:@"departureGate"];
-        flightStatus.arrivalTerminal = [airportResources objectForKey:@"arrivalTerminal"];
-        flightStatus.arrivalGate = [airportResources objectForKey:@"arrivalGate"];
+        flightStatus.departureTerminal = ([airportResources objectForKey:@"departureTerminal"]) ? [airportResources objectForKey:@"departureTerminal"] : @"N/A";
+        flightStatus.departureGate = ([airportResources objectForKey:@"departureGate"]) ? [airportResources objectForKey:@"departureGate"] : @"N/A";
+        flightStatus.arrivalTerminal = ([airportResources objectForKey:@"arrivalTerminal"]) ? [airportResources objectForKey:@"arrivalTerminal"] : @"N/A";
+        flightStatus.arrivalGate = ([airportResources objectForKey:@"arrivalGate"]) ? [airportResources objectForKey:@"arrivalGate"] : @"N/A";
 
 
         // add the new flight status to the array of statuses
@@ -111,7 +137,10 @@
     
     NSLog(@"Done");
     
-    [self.delegate didReceiveFlightStatuses:flightStatusesArray];
+    // return the results back to the view controller (make sure it's on the main thread since UI will be updated)
+    dispatch_async(dispatch_get_main_queue(), ^{
+        [self.delegate didReceiveFlightStatuses:flightStatusesArray];
+    });
 }
 
 

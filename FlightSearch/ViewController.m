@@ -16,12 +16,53 @@
 
 - (void)viewDidLoad {
     [super viewDidLoad];
-    // Do any additional setup after loading the view, typically from a nib.
-    
+
+    // initialize communicator to interact with flight stats API and return results here
     _communicator = [[FlightStatsCommunicator alloc] init];
     _communicator.delegate = self;
+    
+    // update date textfield to today's date
+    [self updateDateTextField:[NSDate date]];
+    
+    // set up date picker keyboard for date textfield
+    UIDatePicker *datePicker = [[UIDatePicker alloc] init];
+    [datePicker setDatePickerMode:UIDatePickerModeDate];
+    [datePicker addTarget:self action:@selector(dateUpdated:) forControlEvents:UIControlEventValueChanged];
+    [dateTextField setInputView:datePicker];
+
+    UIToolbar* numberToolbar = [[UIToolbar alloc]initWithFrame:CGRectMake(0, 0, self.view.frame.size.width, 50)];
+    numberToolbar.barStyle = UIBarStyleDefault;
+    numberToolbar.items = [NSArray arrayWithObjects:
+                           [[UIBarButtonItem alloc]initWithTitle:@"Today" style:UIBarButtonItemStylePlain target:self action:@selector(setDatePickerToToday)],
+                           [[UIBarButtonItem alloc]initWithBarButtonSystemItem:UIBarButtonSystemItemFlexibleSpace target:nil action:nil],
+                           [[UIBarButtonItem alloc]initWithTitle:@"Done" style:UIBarButtonItemStyleDone target:self action:@selector(doneWithDatePicker)],
+                           nil];
+    [numberToolbar sizeToFit];
+    
+    dateTextField.inputAccessoryView = numberToolbar;
+    
 }
 
+- (void) dateUpdated:(UIDatePicker *)datePicker {
+    [self updateDateTextField:datePicker.date];
+}
+
+- (void)updateDateTextField:(NSDate*)date{
+    NSDateFormatter *formatter = [[NSDateFormatter alloc] init];
+    [formatter setDateFormat:@"EEEE, MMM. d, yyyy"];
+    dateTextField.text = [formatter stringFromDate:date];
+    
+    selectedDate = date;
+}
+
+-(void) setDatePickerToToday{
+    [(UIDatePicker*)dateTextField.inputView setDate:[NSDate date]];
+    [self updateDateTextField:[NSDate date]];
+}
+
+-(void) doneWithDatePicker{
+    [dateTextField resignFirstResponder];
+}
 
 // Hide navigation bar on first page
 - (void)viewWillAppear:(BOOL)animated {
@@ -39,68 +80,36 @@
     // Dispose of any resources that can be recreated.
 }
 
+#pragma UI input
 
 - (IBAction)searchFlights:(id)sender{
-//    FlightsTableViewController *flightsVC = [[FlightsTableViewController alloc] init];
-//    [self.navigationController pushViewController:flightsVC animated:YES];
+
+    // resign keyboard
+    [self.view endEditing:YES];
     
     
-//    NSMutableURLRequest *request =
-//    [NSMutableURLRequest requestWithURL:[NSURL
-//                                         URLWithString:@"https://api.flightstats.com/flex/flightstatus/rest/v2/json/flight/status/AA/138/dep/2015/12/4?appId=5a72befd&appKey=36550fa3c22e6d88762d8efc1923a952&utc=false"]
-//                            cachePolicy:NSURLRequestReloadIgnoringLocalAndRemoteCacheData
-//                        timeoutInterval:10
-//     ];
-//    
-//    [request setHTTPMethod: @"GET"];
-//    
-//    NSError *requestError = nil;
-//    NSURLResponse *urlResponse = nil;
-//    
-//    
-//    NSData *response1 =
-//    [NSURLConnection sendSynchronousRequest:request
-//                          returningResponse:&urlResponse error:&requestError];
-//    
-//    NSLog(@"RESPONSE: %@", response1);
-//    
+    [self.communicator searchFlightsWithAirline:airlineCodeTextField.text flightNumber:flightNumberTextField.text date:selectedDate];
     
-    NSString *airlineCode = airlineCodeTextField.text;
-    NSString *flightNumber = flightNumberTextField.text;
-    
-    [self.communicator searchFlightsWithAirline:airlineCode flightNumber:flightNumber date:@"..."];
-    
-//    NSString *urlAsString = [NSString stringWithFormat:@"https://api.flightstats.com/flex/flightstatus/rest/v2/json/flight/status/AA/138/dep/2015/12/4?appId=5a72befd&appKey=36550fa3c22e6d88762d8efc1923a952&utc=false"];
-//    NSURL *url = [[NSURL alloc] initWithString:urlAsString];
-//    NSLog(@"%@", urlAsString);
-//    
-//    [NSURLConnection sendAsynchronousRequest:[[NSURLRequest alloc] initWithURL:url] queue:[[NSOperationQueue alloc] init] completionHandler:^(NSURLResponse *response, NSData *data, NSError *error) {
-//        
-//        if (error) {
-////            [self.delegate fetchingGroupsFailedWithError:error];
-//        } else {
-////            [self.delegate receivedGroupsJSON:data];
-//            NSLog(@"data: %@",data);
-//            
-//            NSError *localError = nil;
-//            NSDictionary *parsedObject = [NSJSONSerialization JSONObjectWithData:data options:0 error:&localError];
-//
-//        }
-//    }];
 }
 
+- (IBAction)resignKeyboard:(id)sender{
+    [self.view endEditing:YES];
+}
+
+#pragma FlightStatsCommunicatorDelegate
 
 - (void)didReceiveFlightStatuses:(NSArray *)flightStatuses{
 
-    dispatch_async(dispatch_get_main_queue(), ^{
+//    dispatch_async(dispatch_get_main_queue(), ^{
         FlightsTableViewController *flightsVC = [[FlightsTableViewController alloc] initWithFlightStatuses:flightStatuses];
         [self.navigationController pushViewController:flightsVC animated:YES];
-    });
+//    });
 }
 
 
 - (void)fetchingFlightStatusesFailedWithError:(NSError *)error{
     NSLog(@"ERROR");
 }
+
 
 @end

@@ -12,6 +12,7 @@
 
 @property (nonatomic,strong) NSString *airlineCode;
 @property (nonatomic,strong) NSString *flightNumber;
+@property (nonatomic,strong) NSDate *searchDate;
 
 @property (nonatomic,strong) NSArray *flightStatusesArray;
 

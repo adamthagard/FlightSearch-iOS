@@ -14,6 +14,9 @@
 @interface ViewController : UIViewController<FlightStatsCommunicatorDelegate>{
     IBOutlet UITextField *airlineCodeTextField;
     IBOutlet UITextField *flightNumberTextField;
+    IBOutlet UITextField *dateTextField;
+   
+    NSDate *selectedDate;
 }
 
 @property (strong, nonatomic) FlightStatsCommunicator *communicator;
