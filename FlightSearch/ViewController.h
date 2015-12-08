@@ -8,8 +8,15 @@
 
 #import <UIKit/UIKit.h>
 #import "FlightsTableViewController.h"
+#import "FlightStatsCommunicator.h"
+#import "FlightStatsCommunicatorDelegate.h"
 
-@interface ViewController : UIViewController
+@interface ViewController : UIViewController<FlightStatsCommunicatorDelegate>{
+    IBOutlet UITextField *airlineCodeTextField;
+    IBOutlet UITextField *flightNumberTextField;
+}
+
+@property (strong, nonatomic) FlightStatsCommunicator *communicator;
 
 
 @end

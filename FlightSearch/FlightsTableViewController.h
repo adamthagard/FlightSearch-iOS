@@ -14,4 +14,6 @@
     NSMutableArray *flightStatuses;
 }
 
+- (id)initWithFlightStatuses:(NSArray*)newFlightStatuses;
+
 @end

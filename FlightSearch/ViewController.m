@@ -17,6 +17,9 @@
 - (void)viewDidLoad {
     [super viewDidLoad];
     // Do any additional setup after loading the view, typically from a nib.
+    
+    _communicator = [[FlightStatsCommunicator alloc] init];
+    _communicator.delegate = self;
 }
 
 
@@ -62,25 +65,42 @@
 //    NSLog(@"RESPONSE: %@", response1);
 //    
     
+    NSString *airlineCode = airlineCodeTextField.text;
+    NSString *flightNumber = flightNumberTextField.text;
     
+    [self.communicator searchFlightsWithAirline:airlineCode flightNumber:flightNumber date:@"..."];
     
-    NSString *urlAsString = [NSString stringWithFormat:@"https://api.flightstats.com/flex/flightstatus/rest/v2/json/flight/status/AA/138/dep/2015/12/4?appId=5a72befd&appKey=36550fa3c22e6d88762d8efc1923a952&utc=false"];
-    NSURL *url = [[NSURL alloc] initWithString:urlAsString];
-    NSLog(@"%@", urlAsString);
-    
-    [NSURLConnection sendAsynchronousRequest:[[NSURLRequest alloc] initWithURL:url] queue:[[NSOperationQueue alloc] init] completionHandler:^(NSURLResponse *response, NSData *data, NSError *error) {
-        
-        if (error) {
-//            [self.delegate fetchingGroupsFailedWithError:error];
-        } else {
-//            [self.delegate receivedGroupsJSON:data];
-            NSLog(@"data: %@",data);
-            
-            NSError *localError = nil;
-            NSDictionary *parsedObject = [NSJSONSerialization JSONObjectWithData:data options:0 error:&localError];
+//    NSString *urlAsString = [NSString stringWithFormat:@"https://api.flightstats.com/flex/flightstatus/rest/v2/json/flight/status/AA/138/dep/2015/12/4?appId=5a72befd&appKey=36550fa3c22e6d88762d8efc1923a952&utc=false"];
+//    NSURL *url = [[NSURL alloc] initWithString:urlAsString];
+//    NSLog(@"%@", urlAsString);
+//    
+//    [NSURLConnection sendAsynchronousRequest:[[NSURLRequest alloc] initWithURL:url] queue:[[NSOperationQueue alloc] init] completionHandler:^(NSURLResponse *response, NSData *data, NSError *error) {
+//        
+//        if (error) {
+////            [self.delegate fetchingGroupsFailedWithError:error];
+//        } else {
+////            [self.delegate receivedGroupsJSON:data];
+//            NSLog(@"data: %@",data);
+//            
+//            NSError *localError = nil;
+//            NSDictionary *parsedObject = [NSJSONSerialization JSONObjectWithData:data options:0 error:&localError];
+//
+//        }
+//    }];
+}
 
-        }
-    }];
+
+- (void)didReceiveFlightStatuses:(NSArray *)flightStatuses{
+
+    dispatch_async(dispatch_get_main_queue(), ^{
+        FlightsTableViewController *flightsVC = [[FlightsTableViewController alloc] initWithFlightStatuses:flightStatuses];
+        [self.navigationController pushViewController:flightsVC animated:YES];
+    });
+}
+
+
+- (void)fetchingFlightStatusesFailedWithError:(NSError *)error{
+    NSLog(@"ERROR");
 }
 
 @end

@@ -11,6 +11,7 @@
 		424845371C112BD8002686EC /* FlightsTableViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 424845361C112BD8002686EC /* FlightsTableViewController.m */; };
 		4248453A1C1136E5002686EC /* FlightStatus.m in Sources */ = {isa = PBXBuildFile; fileRef = 424845391C1136E5002686EC /* FlightStatus.m */; };
 		4248453D1C113FFA002686EC /* FlightStatusTableViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 4248453C1C113FFA002686EC /* FlightStatusTableViewCell.m */; };
+		427808D51C165FC7007DA42C /* FlightStatusSearch.m in Sources */ = {isa = PBXBuildFile; fileRef = 427808D41C165FC7007DA42C /* FlightStatusSearch.m */; };
 		427B9DD51C110EED0056F625 /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = 427B9DD41C110EED0056F625 /* main.m */; };
 		427B9DD81C110EED0056F625 /* AppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = 427B9DD71C110EED0056F625 /* AppDelegate.m */; };
 		427B9DDB1C110EED0056F625 /* ViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 427B9DDA1C110EED0056F625 /* ViewController.m */; };
@@ -39,6 +40,9 @@
 		424845391C1136E5002686EC /* FlightStatus.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = FlightStatus.m; sourceTree = "<group>"; };
 		4248453B1C113FFA002686EC /* FlightStatusTableViewCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = FlightStatusTableViewCell.h; sourceTree = "<group>"; };
 		4248453C1C113FFA002686EC /* FlightStatusTableViewCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = FlightStatusTableViewCell.m; sourceTree = "<group>"; };
+		427808D21C162D88007DA42C /* FlightStatsCommunicatorDelegate.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = FlightStatsCommunicatorDelegate.h; sourceTree = "<group>"; };
+		427808D31C165FC7007DA42C /* FlightStatusSearch.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = FlightStatusSearch.h; sourceTree = "<group>"; };
+		427808D41C165FC7007DA42C /* FlightStatusSearch.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = FlightStatusSearch.m; sourceTree = "<group>"; };
 		427B9DCF1C110EED0056F625 /* FlightSearch.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = FlightSearch.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		427B9DD31C110EED0056F625 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		427B9DD41C110EED0056F625 /* main.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = main.m; sourceTree = "<group>"; };
@@ -100,12 +104,15 @@
 				427B9DDC1C110EED0056F625 /* Main.storyboard */,
 				424845351C112BD7002686EC /* FlightsTableViewController.h */,
 				424845361C112BD8002686EC /* FlightsTableViewController.m */,
-				424845381C1136E5002686EC /* FlightStatus.h */,
-				424845391C1136E5002686EC /* FlightStatus.m */,
 				4248453B1C113FFA002686EC /* FlightStatusTableViewCell.h */,
 				4248453C1C113FFA002686EC /* FlightStatusTableViewCell.m */,
+				424845381C1136E5002686EC /* FlightStatus.h */,
+				424845391C1136E5002686EC /* FlightStatus.m */,
+				427808D31C165FC7007DA42C /* FlightStatusSearch.h */,
+				427808D41C165FC7007DA42C /* FlightStatusSearch.m */,
 				423B6F3D1C153DA600EBA335 /* FlightStatsCommunicator.h */,
 				423B6F3E1C153DA600EBA335 /* FlightStatsCommunicator.m */,
+				427808D21C162D88007DA42C /* FlightStatsCommunicatorDelegate.h */,
 				427B9DDF1C110EED0056F625 /* Images.xcassets */,
 				427B9DE11C110EED0056F625 /* LaunchScreen.xib */,
 				427B9DD21C110EED0056F625 /* Supporting Files */,
@@ -246,6 +253,7 @@
 				427B9DD51C110EED0056F625 /* main.m in Sources */,
 				424845371C112BD8002686EC /* FlightsTableViewController.m in Sources */,
 				423B6F3F1C153DA600EBA335 /* FlightStatsCommunicator.m in Sources */,
+				427808D51C165FC7007DA42C /* FlightStatusSearch.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

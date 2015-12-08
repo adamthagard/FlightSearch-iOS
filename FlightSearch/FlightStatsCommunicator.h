@@ -7,7 +7,17 @@
 //
 
 #import <Foundation/Foundation.h>
+#import "FlightStatus.h"
+#import "FlightStatsCommunicatorDelegate.h"
 
-@interface FlightStatsCommunicator : NSObject
+@interface FlightStatsCommunicator : NSObject{
+    NSDateFormatter *flightStatsDF;
+    NSDateFormatter *dayDF;
+    NSDateFormatter *timeDF;
+}
+
+@property (weak, nonatomic) id<FlightStatsCommunicatorDelegate> delegate;
+
+- (void)searchFlightsWithAirline:(NSString*)airlineCode flightNumber:(NSString*)flightNumber date:(NSString*)date;
 
 @end

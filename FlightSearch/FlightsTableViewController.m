@@ -16,6 +16,17 @@ static NSString *CellIdentifier = @"CellIdentifier";
 
 @implementation FlightsTableViewController
 
+- (id)initWithFlightStatuses:(NSArray*)newFlightStatuses {
+    self = [super init];
+    if (self) {
+        flightStatuses = [[NSMutableArray alloc] initWithArray:newFlightStatuses];
+        
+        self.navigationItem.title = @"A custom title";
+    }
+    return self;
+}
+
+
 - (void)viewDidLoad {
     [super viewDidLoad];
     
@@ -40,62 +51,62 @@ static NSString *CellIdentifier = @"CellIdentifier";
     // self.navigationItem.rightBarButtonItem = self.editButtonItem;
     
     
-    flightStatuses = [[NSMutableArray alloc] init];
+//    flightStatuses = [[NSMutableArray alloc] init];
+//
+//    FlightStatus *testFlight = [[FlightStatus alloc] init];
+//    
+//    testFlight.status = @"On-time";
+//    testFlight.departureAirport = @"LHR";
+//    testFlight.arrivalAirport = @"LAX";
+//
+//    testFlight.departureCity = @"Departed London,";
+//    testFlight.arrivalCity = @"Arrives Los Angeles,";
+//    
+//    testFlight.departureDate = @"Thursday, Dec. 3";
+//    testFlight.arrivalDate = @"Thursday, Dec. 3";
+//    
+//    testFlight.departureTime = @"1:29 PM";
+//    testFlight.arrivalTime = @"4:36 PM";
+//    
+//    testFlight.departureScheduledTime = @"1:30 PM";
+//    testFlight.arrivalScheduledTime = @"5:00 PM";
+//    
+//    testFlight.departureTerminal = @"3";
+//    testFlight.arrivalTerminal = @"4";
+//    
+//    testFlight.departureGate = @"35";
+//    testFlight.arrivalGate = @"41";
+//    
+//    [flightStatuses addObject:testFlight];
+//    
+//    
+//    FlightStatus *testFlight2 = [[FlightStatus alloc] init];
+//    
+//    testFlight2.status = @"On-time";
+//    testFlight2.departureAirport = @"DFW";
+//    testFlight2.arrivalAirport = @"DCA";
+//    
+//    testFlight2.departureCity = @"Departed Dallas,";
+//    testFlight2.arrivalCity = @"Arrives Washington D.C.,";
+//    
+//    testFlight2.departureDate = @"Thursday, Dec. 3";
+//    testFlight2.arrivalDate = @"Thursday, Dec. 3";
+//    
+//    testFlight2.departureTime = @"5:00 PM";
+//    testFlight2.arrivalTime = @"8:49 PM";
+//    
+////    testFlight2.departureScheduledTime = @"1:30 PM";
+////    testFlight2.arrivalScheduledTime = @"5:00 PM";
+//    
+//    testFlight2.departureTerminal = @"A";
+//    testFlight2.arrivalTerminal = @"C";
+//    
+//    testFlight2.departureGate = @"A11";
+//    testFlight2.arrivalGate = @"25";
+//    
+////    [flightStatuses addObject:testFlight2];
     
-    FlightStatus *testFlight = [[FlightStatus alloc] init];
-    
-    testFlight.status = @"On-time";
-    testFlight.departureAirport = @"LHR";
-    testFlight.arrivalAirport = @"LAX";
-
-    testFlight.departureCity = @"Departed London,";
-    testFlight.arrivalCity = @"Arrives Los Angeles,";
-    
-    testFlight.departureDate = @"Thursday, Dec. 3";
-    testFlight.arrivalDate = @"Thursday, Dec. 3";
-    
-    testFlight.departureTime = @"1:29 PM";
-    testFlight.arrivalTime = @"4:36 PM";
-    
-    testFlight.departureScheduledTime = @"1:30 PM";
-    testFlight.arrivalScheduledTime = @"5:00 PM";
-    
-    testFlight.departureTerminal = @"3";
-    testFlight.arrivalTerminal = @"4";
-    
-    testFlight.departureGate = @"35";
-    testFlight.arrivalGate = @"41";
-    
-    [flightStatuses addObject:testFlight];
-    
-    
-    FlightStatus *testFlight2 = [[FlightStatus alloc] init];
-    
-    testFlight2.status = @"On-time";
-    testFlight2.departureAirport = @"DFW";
-    testFlight2.arrivalAirport = @"DCA";
-    
-    testFlight2.departureCity = @"Departed Dallas,";
-    testFlight2.arrivalCity = @"Arrives Washington D.C.,";
-    
-    testFlight2.departureDate = @"Thursday, Dec. 3";
-    testFlight2.arrivalDate = @"Thursday, Dec. 3";
-    
-    testFlight2.departureTime = @"5:00 PM";
-    testFlight2.arrivalTime = @"8:49 PM";
-    
-//    testFlight2.departureScheduledTime = @"1:30 PM";
-//    testFlight2.arrivalScheduledTime = @"5:00 PM";
-    
-    testFlight2.departureTerminal = @"A";
-    testFlight2.arrivalTerminal = @"C";
-    
-    testFlight2.departureGate = @"A11";
-    testFlight2.arrivalGate = @"25";
-    
-//    [flightStatuses addObject:testFlight2];
-    
-    [self.tableView reloadData];
+//    [self.tableView reloadData];
     
 }
 
@@ -148,6 +159,8 @@ static NSString *CellIdentifier = @"CellIdentifier";
 //    [cell.departureGateLabel setText:[NSString stringWithFormat:@"Gate: %d",[(FlightStatus*)[flightStatuses objectAtIndex:indexPath.row] departureGate]]];
 //    [cell.arrivalGateLabel setText:[NSString stringWithFormat:@"Gate: %d",[(FlightStatus*)[flightStatuses objectAtIndex:indexPath.row] arrivalGate]]];
     
+    cell.selectionStyle = UITableViewCellSelectionStyleNone;
+
     return cell;
 }
 
