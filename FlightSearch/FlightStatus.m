@@ -10,7 +10,7 @@
 
 @implementation FlightStatus
 
-# pragma nscoding
+# pragma nscoding (so it can be saved in nsuserdefaults)
 
 - (void)encodeWithCoder:(NSCoder *)encoder {
     //Encode properties, other class variables, etc

@@ -23,7 +23,6 @@
 
 @property (weak, nonatomic) id<FlightStatsCommunicatorDelegate> delegate;
 
-//- (void)searchFlightsWithAirline:(NSString*)airlineCode flightNumber:(NSString*)flightNumber date:(NSDate*)date;
 - (void)searchFlights:(FlightStatusSearch*)flightStatusSearch;
 
 @end

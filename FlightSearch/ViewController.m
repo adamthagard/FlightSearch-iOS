@@ -47,7 +47,6 @@
                            [[UIBarButtonItem alloc]initWithTitle:@"Done" style:UIBarButtonItemStyleDone target:self action:@selector(doneWithDatePicker)],
                            nil];
     [numberToolbar sizeToFit];
-    
     dateTextField.inputAccessoryView = numberToolbar;
     
 }
@@ -74,8 +73,8 @@
     [dateTextField resignFirstResponder];
 }
 
-// Hide navigation bar on first page
 - (void)viewWillAppear:(BOOL)animated {
+    // Hide navigation bar on first screen
     [self.navigationController setNavigationBarHidden:YES animated:animated];
     [super viewWillAppear:animated];
     
@@ -115,14 +114,17 @@
     if ([newFlightStatusSearch isSameSearchAs:loadedFlightStatusSearch]){
         NSLog(@"redoing latest search");
         
+        // show latest search results and try to refresh them
         FlightsTableViewController *flightsVC = [[FlightsTableViewController alloc] initWithFlightSearchResults:loadedFlightStatusSearch andRefresh:YES];
         [self.navigationController pushViewController:flightsVC animated:YES];
     }
     else{
         NSLog(@"new search");
 
+        // start a new flight search
         [self.communicator searchFlights:newFlightStatusSearch];
         
+        // pop up a loading indicator
         loadingView = [[UIView alloc] initWithFrame:self.view.frame];
         loadingView.backgroundColor = [UIColor colorWithRed:0.0 green:0.0 blue:0.0 alpha:0.4];
         float spinnerSize = 100.0;
@@ -146,12 +148,14 @@
 - (void)didReceiveFlightStatuses:(FlightStatusSearch *)completedFlightStatusSearch{
 
     if ([completedFlightStatusSearch.flightStatusesArray count] > 0){
+        // show results
         FlightsTableViewController *flightsVC = [[FlightsTableViewController alloc] initWithFlightSearchResults:completedFlightStatusSearch andRefresh:NO];
         [self.navigationController pushViewController:flightsVC animated:YES];
     }
     else{
         [loadingView removeFromSuperview];
-
+        
+        // display error
         UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"No flights found"
                                                         message:@"Please enter a valid airline code and flight number."
                                                        delegate:nil
@@ -166,6 +170,7 @@
     
     [loadingView removeFromSuperview];    
     
+    // dislay error
     if (error.code == -1009){
         UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"No network connection"
                                                     message:@"You must be connected to the internet to search for flights."

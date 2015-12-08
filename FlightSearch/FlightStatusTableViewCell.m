@@ -28,15 +28,13 @@
         // Helpers
         CGSize size = self.frame.size;
         float rowYStart = EDGE_PADDING;
-//        UIColor *myGreenColor = [UIColor colorWithRed:67.0/255.0 green:148.0/255.0 blue:11.0/255.0 alpha:1.0];
-//        UIColor *myGreenColor = [UIColor colorWithRed:0.0/255.0 green:122.0/255.0 blue:255.0/255.0 alpha:1.0];
-        UIColor *myGreenColor = [UIColor colorWithRed:20.0/255.0 green:100.0/255.0 blue:190.0/255.0 alpha:1.0];
+        UIColor *myColor = [UIColor colorWithRed:20.0/255.0 green:100.0/255.0 blue:190.0/255.0 alpha:1.0];
         
         // Status Label
         self.statusLabel = [[UILabel alloc] initWithFrame:CGRectMake(EDGE_PADDING, rowYStart, size.width - 2*EDGE_PADDING, STATUS_HEIGHT)];
         [self.statusLabel setFont:[UIFont systemFontOfSize:18.0]];
         [self.statusLabel setTextAlignment:NSTextAlignmentLeft];
-        [self.statusLabel setTextColor:myGreenColor];
+        [self.statusLabel setTextColor:myColor];
         [self.statusLabel setAutoresizingMask:(UIViewAutoresizingFlexibleWidth)];
         [self.contentView addSubview:self.statusLabel];
         
@@ -63,7 +61,7 @@
         // Path Visual
         self.circleView1 = [[UIView alloc] initWithFrame:CGRectMake(SIDE_OFFSET,rowYStart+AIRPORT_CODE_HEIGHT/2-CIRCLE_SIZE/2,CIRCLE_SIZE,CIRCLE_SIZE)];
         self.circleView1.layer.cornerRadius = 5;
-        self.circleView1.backgroundColor = myGreenColor;
+        self.circleView1.backgroundColor = myColor;
         [self.contentView addSubview:self.circleView1];
         
         self.circleView2 = [[UIView alloc] initWithFrame:CGRectMake(size.width - SIDE_OFFSET-CIRCLE_SIZE,rowYStart+AIRPORT_CODE_HEIGHT/2-CIRCLE_SIZE/2,CIRCLE_SIZE,CIRCLE_SIZE)];
@@ -72,7 +70,7 @@
         [self.contentView addSubview:self.circleView2];
         
         self.lineView1 = [[UIView alloc] initWithFrame:CGRectMake(SIDE_OFFSET+5,rowYStart+AIRPORT_CODE_HEIGHT/2-1,100,2)];
-        self.lineView1.backgroundColor = myGreenColor;
+        self.lineView1.backgroundColor = myColor;
         [self.contentView addSubview:self.lineView1];
         
         self.lineView2 = [[UIView alloc] initWithFrame:CGRectMake(SIDE_OFFSET+5+100,rowYStart+AIRPORT_CODE_HEIGHT/2-1,60,2)];
@@ -81,7 +79,7 @@
         
         self.airplaneImageView = [[UIImageView alloc] initWithFrame:CGRectMake(SIDE_OFFSET,rowYStart+AIRPORT_CODE_HEIGHT/2-AIRPLANE_IMAGE_SIZE/2,AIRPLANE_IMAGE_SIZE,AIRPLANE_IMAGE_SIZE)];
         self.airplaneImageView.image = [[UIImage imageNamed:@"airplane_white.png"] imageWithRenderingMode:UIImageRenderingModeAlwaysTemplate];
-        self.airplaneImageView.tintColor = myGreenColor;
+        self.airplaneImageView.tintColor = myColor;
         self.airplaneImageView.backgroundColor = [UIColor whiteColor];
         [self.contentView addSubview:self.airplaneImageView];
         
@@ -220,7 +218,6 @@
     [self.lineView2 setFrame:CGRectMake(currX,centerY-LINE_WIDTH/2,(endX - CIRCLE_SIZE/2) - currX,LINE_WIDTH)];
 
     [self.airplaneImageView setFrame:CGRectMake(currX,centerY-AIRPLANE_IMAGE_SIZE/2,AIRPLANE_IMAGE_SIZE,AIRPLANE_IMAGE_SIZE)];
-
 }
 
 - (void)awakeFromNib {

@@ -8,11 +8,17 @@
 
 #import "FlightStatsCommunicator.h"
 
+#define APP_KEY @"36550fa3c22e6d88762d8efc1923a952"
+#define APP_ID @"5a72befd"
+
 @implementation FlightStatsCommunicator
 
 - (id)init {
     self = [super init];
     if (self) {
+        
+        // configure date formatters for later use
+        
         flightStatsDF = [[NSDateFormatter alloc] init];
         [flightStatsDF setDateFormat:@"yyyy-MM-dd'T'HH:mm:ss.SSS"];
 
@@ -29,6 +35,7 @@
         urlDF = [[NSDateFormatter alloc] init];
         [urlDF setDateFormat:@"yyyy'/'MM'/'dd"];
         
+        // create lookup table of flight statuses
         flightStatusDescriptions = [NSDictionary dictionaryWithObjectsAndKeys:
                                     @"En-Route", @"A",
                                     @"Canceled", @"C",
@@ -45,14 +52,13 @@
 }
 
 
-
+// make request to FlightStats API
 - (void)searchFlights:(FlightStatusSearch*)flightStatusSearch{
-//    - (void)searchFlightsWithAirline:(NSString*)airlineCode flightNumber:(NSString*)flightNumber date:(NSDate*)date{
     
     NSString *urlFormattedDate = [urlDF stringFromDate:flightStatusSearch.searchDate];
     
-    NSString *urlAsString = [NSString stringWithFormat:@"https://api.flightstats.com/flex/flightstatus/rest/v2/json/flight/status/%@/%@/dep/%@?appId=5a72befd&appKey=36550fa3c22e6d88762d8efc1923a952&utc=false",flightStatusSearch.airlineCode,flightStatusSearch.flightNumber,urlFormattedDate];
-//    NSString *urlAsString = [NSString stringWithFormat:@"https://api.flightstats.com/flex/flightstatus/rest/v2/json/flight/status/AA/138/dep/2015/12/4?appId=5a72befd&appKey=36550fa3c22e6d88762d8efc1923a952&utc=false"];
+    NSString *urlAsString = [NSString stringWithFormat:@"https://api.flightstats.com/flex/flightstatus/rest/v2/json/flight/status/%@/%@/dep/%@?appId=%@&appKey=%@&utc=false",flightStatusSearch.airlineCode,flightStatusSearch.flightNumber,urlFormattedDate,APP_ID,APP_KEY];
+
     NSURL *url = [[NSURL alloc] initWithString:urlAsString];
     NSLog(@"%@", urlAsString);
     
@@ -68,7 +74,6 @@
 
 
 - (void)receiveFlightStatsJSON:(NSData *)data forFlightStatusSearch:(FlightStatusSearch*)flightStatusSearch{
-//    NSLog(@"data: %@",data);
     
     NSError *localError = nil;
     NSDictionary *parsedObject = [NSJSONSerialization JSONObjectWithData:data options:0 error:&localError];
@@ -164,6 +169,7 @@
         [flightStatusesArray addObject:flightStatus];
     }
     
+    // update the flight status search with the results
     flightStatusSearch.flightStatusesArray = [[NSArray alloc] initWithArray:flightStatusesArray];
     flightStatusSearch.lastUpdated = [NSDate date];
     
@@ -179,6 +185,7 @@
 - (void)requestFailedWithError:(NSError *)error{
     NSLog(@"Error %@; %@", error, [error localizedDescription]);
     
+    // return error to the view controller
     dispatch_async(dispatch_get_main_queue(), ^{
         [self.delegate fetchingFlightStatusesFailedWithError:error];
     });
