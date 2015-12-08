@@ -10,4 +10,16 @@
 
 @implementation FlightStatusSearch
 
+- (id)initWithFlightStatusSearch:(FlightStatusSearch*)otherFlightStatusSearch {
+    self = [super init];
+    if (self) {
+        self.airlineCode = otherFlightStatusSearch.airlineCode;
+        self.flightNumber = otherFlightStatusSearch.flightNumber;
+        self.searchDate = otherFlightStatusSearch.searchDate;
+        self.flightStatusesArray = [[NSArray alloc] initWithArray:otherFlightStatusSearch.flightStatusesArray];
+        self.lastUpdated = otherFlightStatusSearch.lastUpdated;
+    }
+    return self;
+}
+
 @end

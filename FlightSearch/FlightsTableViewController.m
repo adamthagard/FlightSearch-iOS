@@ -16,12 +16,25 @@ static NSString *CellIdentifier = @"CellIdentifier";
 
 @implementation FlightsTableViewController
 
-- (id)initWithFlightStatuses:(NSArray*)newFlightStatuses {
+- (id)initWithFlightSearchResults:(FlightStatusSearch*)newFlightStatusSearchResults {
     self = [super init];
     if (self) {
-        flightStatuses = [[NSMutableArray alloc] initWithArray:newFlightStatuses];
+        flightStatusSearch = [[FlightStatusSearch alloc] initWithFlightStatusSearch:newFlightStatusSearchResults];
         
-        self.navigationItem.title = @"A custom title";
+//        self.navigationItem.title = [NSString stringWithFormat:@"%@%@",flightStatusSearch.airlineCode,flightStatusSearch.flightNumber];
+
+        NSString *titleText = [NSString stringWithFormat:@"%@%@",flightStatusSearch.airlineCode,flightStatusSearch.flightNumber];
+        
+//        CGRect frame = CGRectMake(0, 0, [titleText sizeWithFont:[UIFont boldSystemFontOfSize:24.0]].width, 44);
+        CGRect frame = CGRectMake(0, 0, [titleText sizeWithAttributes:@{NSFontAttributeName: [UIFont boldSystemFontOfSize:24.0]}].width, 44);
+        UILabel *label = [[UILabel alloc] initWithFrame:frame];
+        label.backgroundColor = [UIColor clearColor];
+        label.font = [UIFont boldSystemFontOfSize:24.0];
+        label.textAlignment = NSTextAlignmentCenter;
+        label.textColor = [UIColor blackColor];
+        label.text = titleText;
+        
+        self.navigationItem.titleView = label;
     }
     return self;
 }
@@ -36,79 +49,30 @@ static NSString *CellIdentifier = @"CellIdentifier";
     
     [self.tableView setRowHeight:204];
     
-    self.tableView.layer.cornerRadius = 10.0f;
-    self.tableView.layer.masksToBounds = YES;
-    self.tableView.clipsToBounds = YES;
-//    self.tableView.backgroundColor = [UIColor redColor];
     
 
     
-    
-    // Uncomment the following line to preserve selection between presentations.
-    // self.clearsSelectionOnViewWillAppear = NO;
-    
     // Uncomment the following line to display an Edit button in the navigation bar for this view controller.
-    // self.navigationItem.rightBarButtonItem = self.editButtonItem;
+//     self.navigationItem.rightBarButtonItem = self.editButtonItem;
     
-    
-//    flightStatuses = [[NSMutableArray alloc] init];
-//
-//    FlightStatus *testFlight = [[FlightStatus alloc] init];
-//    
-//    testFlight.status = @"On-time";
-//    testFlight.departureAirport = @"LHR";
-//    testFlight.arrivalAirport = @"LAX";
-//
-//    testFlight.departureCity = @"Departed London,";
-//    testFlight.arrivalCity = @"Arrives Los Angeles,";
-//    
-//    testFlight.departureDate = @"Thursday, Dec. 3";
-//    testFlight.arrivalDate = @"Thursday, Dec. 3";
-//    
-//    testFlight.departureTime = @"1:29 PM";
-//    testFlight.arrivalTime = @"4:36 PM";
-//    
-//    testFlight.departureScheduledTime = @"1:30 PM";
-//    testFlight.arrivalScheduledTime = @"5:00 PM";
-//    
-//    testFlight.departureTerminal = @"3";
-//    testFlight.arrivalTerminal = @"4";
-//    
-//    testFlight.departureGate = @"35";
-//    testFlight.arrivalGate = @"41";
-//    
-//    [flightStatuses addObject:testFlight];
-//    
-//    
-//    FlightStatus *testFlight2 = [[FlightStatus alloc] init];
-//    
-//    testFlight2.status = @"On-time";
-//    testFlight2.departureAirport = @"DFW";
-//    testFlight2.arrivalAirport = @"DCA";
-//    
-//    testFlight2.departureCity = @"Departed Dallas,";
-//    testFlight2.arrivalCity = @"Arrives Washington D.C.,";
-//    
-//    testFlight2.departureDate = @"Thursday, Dec. 3";
-//    testFlight2.arrivalDate = @"Thursday, Dec. 3";
-//    
-//    testFlight2.departureTime = @"5:00 PM";
-//    testFlight2.arrivalTime = @"8:49 PM";
-//    
-////    testFlight2.departureScheduledTime = @"1:30 PM";
-////    testFlight2.arrivalScheduledTime = @"5:00 PM";
-//    
-//    testFlight2.departureTerminal = @"A";
-//    testFlight2.arrivalTerminal = @"C";
-//    
-//    testFlight2.departureGate = @"A11";
-//    testFlight2.arrivalGate = @"25";
-//    
-////    [flightStatuses addObject:testFlight2];
-    
-//    [self.tableView reloadData];
     
 }
+
+- (void)viewWillAppear:(BOOL)animated
+{
+    [super viewWillAppear:animated];
+    [self.navigationController.navigationBar setTitleTextAttributes:
+     [NSDictionary dictionaryWithObjectsAndKeys:
+      [UIFont boldSystemFontOfSize:16.0f], NSFontAttributeName,
+      nil]];
+    
+    
+//    [self.navigationController.navigationBar setBackgroundColor:[UIColor blueColor]];
+//    [self.navigationController.navigationBar setBarTintColor:[UIColor colorWithRed:0.0 green:67.0/255.0 blue:139.0/255.0 alpha:1.0]];
+    [self.navigationController.navigationBar setTintColor:[UIColor darkGrayColor]];
+//    [self.navigationController.navigationBar set:[UIColor lightGrayColor]];
+}
+
 
 - (void)didReceiveMemoryWarning {
     [super didReceiveMemoryWarning];
@@ -124,7 +88,7 @@ static NSString *CellIdentifier = @"CellIdentifier";
 
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section {
     // Return the number of rows in the section.
-    return [flightStatuses count];
+    return [flightStatusSearch.flightStatusesArray count];
 }
 
 
@@ -132,6 +96,7 @@ static NSString *CellIdentifier = @"CellIdentifier";
     FlightStatusTableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:CellIdentifier forIndexPath:indexPath];
     
     // Configure the cell...
+    NSArray *flightStatuses = flightStatusSearch.flightStatusesArray;
     
     [cell.statusLabel setText:[NSString stringWithFormat:@"%@",[(FlightStatus*)[flightStatuses objectAtIndex:indexPath.row] status]]];
     
@@ -161,9 +126,18 @@ static NSString *CellIdentifier = @"CellIdentifier";
     
     cell.selectionStyle = UITableViewCellSelectionStyleNone;
 
+    [cell drawFlightVisualWithCellFrame:cell.frame progress:[(FlightStatus*)[flightStatuses objectAtIndex:indexPath.row] flightProgress]];
+    
     return cell;
 }
 
+
+
+-(void) didRotateFromInterfaceOrientation:(UIInterfaceOrientation)fromInterfaceOrientation{
+    NSLog(@"ROTATE!");
+    
+    [self.tableView reloadData];
+}
 
 /*
 // Override to support conditional editing of the table view.

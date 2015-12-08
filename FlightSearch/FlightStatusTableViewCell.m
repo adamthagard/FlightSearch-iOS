@@ -14,7 +14,10 @@
 #define SECONDARY_LABEL_HEIGHT 16.0
 #define TERTIARY_LABEL_HEIGHT 12.0
 #define TIME_LABEL_HEIGHT 26.0
-
+#define SIDE_OFFSET 94.0
+#define CIRCLE_SIZE 10.0
+#define LINE_WIDTH 2.0
+#define AIRPLANE_IMAGE_SIZE 32.0
 
 @implementation FlightStatusTableViewCell
 
@@ -23,9 +26,11 @@
     
     if (self) {
         // Helpers
-        CGSize size = self.contentView.frame.size;
+        CGSize size = self.frame.size;
         float rowYStart = EDGE_PADDING;
-        UIColor *myGreenColor = [UIColor colorWithRed:67.0/255.0 green:148.0/255.0 blue:11.0/255.0 alpha:1.0];
+//        UIColor *myGreenColor = [UIColor colorWithRed:67.0/255.0 green:148.0/255.0 blue:11.0/255.0 alpha:1.0];
+//        UIColor *myGreenColor = [UIColor colorWithRed:0.0/255.0 green:122.0/255.0 blue:255.0/255.0 alpha:1.0];
+        UIColor *myGreenColor = [UIColor colorWithRed:20.0/255.0 green:100.0/255.0 blue:190.0/255.0 alpha:1.0];
         
         // Status Label
         self.statusLabel = [[UILabel alloc] initWithFrame:CGRectMake(EDGE_PADDING, rowYStart, size.width - 2*EDGE_PADDING, STATUS_HEIGHT)];
@@ -56,24 +61,30 @@
         
         
         // Path Visual
-        
-        self.circleView1 = [[UIView alloc] initWithFrame:CGRectMake(88,rowYStart+AIRPORT_CODE_HEIGHT/2-5,10,10)];
+        self.circleView1 = [[UIView alloc] initWithFrame:CGRectMake(SIDE_OFFSET,rowYStart+AIRPORT_CODE_HEIGHT/2-CIRCLE_SIZE/2,CIRCLE_SIZE,CIRCLE_SIZE)];
         self.circleView1.layer.cornerRadius = 5;
         self.circleView1.backgroundColor = myGreenColor;
         [self.contentView addSubview:self.circleView1];
         
-        self.circleView2 = [[UIView alloc] initWithFrame:CGRectMake(size.width - 88+20,rowYStart+AIRPORT_CODE_HEIGHT/2-5,10,10)];
+        self.circleView2 = [[UIView alloc] initWithFrame:CGRectMake(size.width - SIDE_OFFSET-CIRCLE_SIZE,rowYStart+AIRPORT_CODE_HEIGHT/2-CIRCLE_SIZE/2,CIRCLE_SIZE,CIRCLE_SIZE)];
         self.circleView2.layer.cornerRadius = 5;
         self.circleView2.backgroundColor = [UIColor lightGrayColor];
         [self.contentView addSubview:self.circleView2];
         
-        self.lineView1 = [[UIView alloc] initWithFrame:CGRectMake(88+5,rowYStart+AIRPORT_CODE_HEIGHT/2-1,100,2)];
+        self.lineView1 = [[UIView alloc] initWithFrame:CGRectMake(SIDE_OFFSET+5,rowYStart+AIRPORT_CODE_HEIGHT/2-1,100,2)];
         self.lineView1.backgroundColor = myGreenColor;
         [self.contentView addSubview:self.lineView1];
         
-        self.lineView2 = [[UIView alloc] initWithFrame:CGRectMake(88+5+100,rowYStart+AIRPORT_CODE_HEIGHT/2-1,60,2)];
+        self.lineView2 = [[UIView alloc] initWithFrame:CGRectMake(SIDE_OFFSET+5+100,rowYStart+AIRPORT_CODE_HEIGHT/2-1,60,2)];
         self.lineView2.backgroundColor = [UIColor lightGrayColor];
         [self.contentView addSubview:self.lineView2];
+        
+        self.airplaneImageView = [[UIImageView alloc] initWithFrame:CGRectMake(SIDE_OFFSET,rowYStart+AIRPORT_CODE_HEIGHT/2-AIRPLANE_IMAGE_SIZE/2,AIRPLANE_IMAGE_SIZE,AIRPLANE_IMAGE_SIZE)];
+        self.airplaneImageView.image = [[UIImage imageNamed:@"airplane_white.png"] imageWithRenderingMode:UIImageRenderingModeAlwaysTemplate];
+        self.airplaneImageView.tintColor = myGreenColor;
+        self.airplaneImageView.backgroundColor = [UIColor whiteColor];
+        [self.contentView addSubview:self.airplaneImageView];
+        
         
         
         // City Labels
@@ -111,10 +122,7 @@
         [self.arrivalDateLabel setTextColor:[UIColor darkGrayColor]];
         [self.arrivalDateLabel setAutoresizingMask:(UIViewAutoresizingFlexibleWidth)];
         [self.contentView addSubview:self.arrivalDateLabel];
-        
-        
-        
-
+    
         
         
         // Time Labels
@@ -196,6 +204,23 @@
     }
     
     return self;
+}
+
+- (void)drawFlightVisualWithCellFrame:(CGRect)cellFrame progress:(float)progress{
+    float centerY = EDGE_PADDING + STATUS_HEIGHT + EDGE_PADDING + AIRPORT_CODE_HEIGHT/2;
+    
+    float startX = SIDE_OFFSET;
+    float endX = cellFrame.size.width - SIDE_OFFSET;
+    float currX = startX + progress * ((endX - AIRPLANE_IMAGE_SIZE) - startX);
+    
+    [self.circleView1 setFrame:CGRectMake(startX,centerY-CIRCLE_SIZE/2,CIRCLE_SIZE,CIRCLE_SIZE)];
+    [self.circleView2 setFrame:CGRectMake(endX - CIRCLE_SIZE,centerY-CIRCLE_SIZE/2,CIRCLE_SIZE,CIRCLE_SIZE)];
+
+    [self.lineView1 setFrame:CGRectMake(startX + CIRCLE_SIZE/2,centerY-LINE_WIDTH/2,currX - (startX + CIRCLE_SIZE/2),LINE_WIDTH)];
+    [self.lineView2 setFrame:CGRectMake(currX,centerY-LINE_WIDTH/2,(endX - CIRCLE_SIZE/2) - currX,LINE_WIDTH)];
+
+    [self.airplaneImageView setFrame:CGRectMake(currX,centerY-AIRPLANE_IMAGE_SIZE/2,AIRPLANE_IMAGE_SIZE,AIRPLANE_IMAGE_SIZE)];
+
 }
 
 - (void)awakeFromNib {

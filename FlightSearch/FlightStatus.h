@@ -31,5 +31,6 @@
 @property (nonatomic,strong) NSString *arrivalTerminal;
 @property (nonatomic,strong) NSString *arrivalGate;
 
+@property (nonatomic) float flightProgress;
 
 @end

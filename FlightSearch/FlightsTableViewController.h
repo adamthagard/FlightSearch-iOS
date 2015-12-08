@@ -9,11 +9,12 @@
 #import <UIKit/UIKit.h>
 #import "FlightStatus.h"
 #import "FlightStatusTableViewCell.h"
+#import "FlightStatusSearch.h"
 
 @interface FlightsTableViewController : UITableViewController{
-    NSMutableArray *flightStatuses;
+    FlightStatusSearch *flightStatusSearch;
 }
 
-- (id)initWithFlightStatuses:(NSArray*)newFlightStatuses;
+- (id)initWithFlightSearchResults:(FlightStatusSearch*)newFlightStatusSearchResults;
 
 @end

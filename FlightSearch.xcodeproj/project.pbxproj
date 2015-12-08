@@ -19,6 +19,8 @@
 		427B9DE01C110EED0056F625 /* Images.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 427B9DDF1C110EED0056F625 /* Images.xcassets */; };
 		427B9DE31C110EED0056F625 /* LaunchScreen.xib in Resources */ = {isa = PBXBuildFile; fileRef = 427B9DE11C110EED0056F625 /* LaunchScreen.xib */; };
 		427B9DEF1C110EED0056F625 /* FlightSearchTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 427B9DEE1C110EED0056F625 /* FlightSearchTests.m */; };
+		42D5DFF01C16C921002EFFC0 /* airplane_white.png in Resources */ = {isa = PBXBuildFile; fileRef = 42D5DFEF1C16C921002EFFC0 /* airplane_white.png */; };
+		42D5DFFA1C16DE21002EFFC0 /* bgl.jpg in Resources */ = {isa = PBXBuildFile; fileRef = 42D5DFF91C16DE21002EFFC0 /* bgl.jpg */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -56,6 +58,8 @@
 		427B9DE81C110EED0056F625 /* FlightSearchTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = FlightSearchTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		427B9DED1C110EED0056F625 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		427B9DEE1C110EED0056F625 /* FlightSearchTests.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = FlightSearchTests.m; sourceTree = "<group>"; };
+		42D5DFEF1C16C921002EFFC0 /* airplane_white.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = airplane_white.png; sourceTree = "<group>"; };
+		42D5DFF91C16DE21002EFFC0 /* bgl.jpg */ = {isa = PBXFileReference; lastKnownFileType = image.jpeg; path = bgl.jpg; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -125,6 +129,8 @@
 			children = (
 				427B9DD31C110EED0056F625 /* Info.plist */,
 				427B9DD41C110EED0056F625 /* main.m */,
+				42D5DFEF1C16C921002EFFC0 /* airplane_white.png */,
+				42D5DFF91C16DE21002EFFC0 /* bgl.jpg */,
 			);
 			name = "Supporting Files";
 			sourceTree = "<group>";
@@ -227,6 +233,8 @@
 			buildActionMask = 2147483647;
 			files = (
 				427B9DDE1C110EED0056F625 /* Main.storyboard in Resources */,
+				42D5DFFA1C16DE21002EFFC0 /* bgl.jpg in Resources */,
+				42D5DFF01C16C921002EFFC0 /* airplane_white.png in Resources */,
 				427B9DE31C110EED0056F625 /* LaunchScreen.xib in Resources */,
 				427B9DE01C110EED0056F625 /* Images.xcassets in Resources */,
 			);

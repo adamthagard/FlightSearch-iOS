@@ -7,8 +7,9 @@
 //
 
 #import <Foundation/Foundation.h>
+#import "FlightStatusSearch.h"
 
 @protocol FlightStatsCommunicatorDelegate
-- (void)didReceiveFlightStatuses:(NSArray *)flightStatuses;
+- (void)didReceiveFlightStatuses:(FlightStatusSearch *)completedFlightStatusSearch;
 - (void)fetchingFlightStatusesFailedWithError:(NSError *)error;
 @end

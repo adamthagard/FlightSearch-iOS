@@ -88,8 +88,16 @@
     [self.view endEditing:YES];
     
     
-    [self.communicator searchFlightsWithAirline:airlineCodeTextField.text flightNumber:flightNumberTextField.text date:selectedDate];
+    FlightStatusSearch *newFlightStatusSearch = [[FlightStatusSearch alloc] init];
+    newFlightStatusSearch.airlineCode = airlineCodeTextField.text;
+    newFlightStatusSearch.flightNumber = flightNumberTextField.text;
+    newFlightStatusSearch.searchDate = selectedDate;
     
+//    [self.communicator searchFlightsWithAirline:airlineCodeTextField.text flightNumber:flightNumberTextField.text date:selectedDate];
+    [self.communicator searchFlights:newFlightStatusSearch];
+    
+    
+//    uivi
 }
 
 - (IBAction)resignKeyboard:(id)sender{
@@ -98,12 +106,10 @@
 
 #pragma FlightStatsCommunicatorDelegate
 
-- (void)didReceiveFlightStatuses:(NSArray *)flightStatuses{
+- (void)didReceiveFlightStatuses:(FlightStatusSearch *)completedFlightStatusSearch{
 
-//    dispatch_async(dispatch_get_main_queue(), ^{
-        FlightsTableViewController *flightsVC = [[FlightsTableViewController alloc] initWithFlightStatuses:flightStatuses];
-        [self.navigationController pushViewController:flightsVC animated:YES];
-//    });
+    FlightsTableViewController *flightsVC = [[FlightsTableViewController alloc] initWithFlightSearchResults:completedFlightStatusSearch];
+    [self.navigationController pushViewController:flightsVC animated:YES];
 }
 
 

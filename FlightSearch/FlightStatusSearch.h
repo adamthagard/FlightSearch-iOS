@@ -18,4 +18,7 @@
 
 @property (nonatomic,strong) NSDate *lastUpdated;
 
+
+- (id)initWithFlightStatusSearch:(FlightStatusSearch*)otherFlightStatusSearch;
+
 @end

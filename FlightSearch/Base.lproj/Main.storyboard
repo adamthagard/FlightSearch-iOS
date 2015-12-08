@@ -16,9 +16,13 @@
                         <rect key="frame" x="0.0" y="0.0" width="600" height="600"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
-                            <button opaque="NO" contentMode="scaleToFill" misplaced="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="ugf-cP-Xym">
-                                <rect key="frame" x="0.0" y="32" width="600" height="568"/>
-                                <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
+                            <imageView userInteractionEnabled="NO" contentMode="scaleAspectFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="bgl.jpg" translatesAutoresizingMaskIntoConstraints="NO" id="fmd-no-K9y">
+                                <rect key="frame" x="0.0" y="0.0" width="600" height="600"/>
+                                <color key="backgroundColor" white="0.0" alpha="1" colorSpace="calibratedWhite"/>
+                            </imageView>
+                            <button opaque="NO" alpha="0.5499999999999996" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="ugf-cP-Xym">
+                                <rect key="frame" x="0.0" y="0.0" width="600" height="600"/>
+                                <color key="backgroundColor" red="0.0" green="0.47843137250000001" blue="1" alpha="1" colorSpace="calibratedRGB"/>
                                 <state key="normal">
                                     <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
                                 </state>
@@ -26,32 +30,32 @@
                                     <action selector="resignKeyboard:" destination="BYZ-38-t0r" eventType="touchUpInside" id="lbP-2Q-OTF"/>
                                 </connections>
                             </button>
-                            <view contentMode="scaleToFill" misplaced="YES" translatesAutoresizingMaskIntoConstraints="NO" id="auB-80-HGN">
-                                <rect key="frame" x="134" y="195" width="332" height="107"/>
+                            <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="auB-80-HGN">
+                                <rect key="frame" x="134" y="216" width="332" height="107"/>
                                 <subviews>
-                                    <textField opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" placeholder="Airline Code" textAlignment="center" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="DfC-n6-qEw">
+                                    <textField opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" text="AA" placeholder="Airline Code" textAlignment="center" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="DfC-n6-qEw">
                                         <rect key="frame" x="8" y="8" width="100" height="52"/>
                                         <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                                         <constraints>
                                             <constraint firstAttribute="height" constant="52" id="Iqz-BQ-nQB"/>
                                             <constraint firstAttribute="width" constant="100" id="dfg-cK-9Tm"/>
                                         </constraints>
-                                        <fontDescription key="fontDescription" type="system" pointSize="44"/>
+                                        <fontDescription key="fontDescription" type="system" pointSize="38"/>
                                         <textInputTraits key="textInputTraits" autocapitalizationType="allCharacters" spellCheckingType="no"/>
                                     </textField>
-                                    <textField opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" placeholder="Flight #        " textAlignment="center" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="S3S-fy-io8">
+                                    <textField opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" text="138" placeholder="Flight #        " textAlignment="center" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="S3S-fy-io8">
                                         <rect key="frame" x="116" y="8" width="100" height="52"/>
                                         <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                                         <constraints>
                                             <constraint firstAttribute="height" constant="52" id="Bk8-hN-3at"/>
                                             <constraint firstAttribute="width" constant="100" id="b9R-MH-unZ"/>
                                         </constraints>
-                                        <fontDescription key="fontDescription" type="system" pointSize="44"/>
+                                        <fontDescription key="fontDescription" type="system" pointSize="38"/>
                                         <textInputTraits key="textInputTraits" keyboardType="numberPad"/>
                                     </textField>
-                                    <button opaque="NO" contentMode="scaleToFill" misplaced="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="v32-MQ-oTZ">
-                                        <rect key="frame" x="224" y="7" width="102" height="91"/>
-                                        <color key="backgroundColor" red="0.0" green="0.47843137250000001" blue="1" alpha="1" colorSpace="calibratedRGB"/>
+                                    <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="v32-MQ-oTZ">
+                                        <rect key="frame" x="224" y="8" width="102" height="91"/>
+                                        <color key="backgroundColor" red="0.0" green="0.26170853193628968" blue="0.54494180484693877" alpha="1" colorSpace="calibratedRGB"/>
                                         <constraints>
                                             <constraint firstAttribute="height" constant="91" id="ETd-TC-rsr"/>
                                             <constraint firstAttribute="width" constant="102" id="fXL-KP-P93"/>
@@ -72,7 +76,7 @@
                                             <constraint firstAttribute="width" constant="208" id="adO-6Q-5W7"/>
                                             <constraint firstAttribute="height" constant="30" id="afA-hy-EdD"/>
                                         </constraints>
-                                        <fontDescription key="fontDescription" type="system" pointSize="14"/>
+                                        <fontDescription key="fontDescription" type="system" pointSize="16"/>
                                         <textInputTraits key="textInputTraits"/>
                                     </textField>
                                 </subviews>
@@ -92,14 +96,18 @@
                                 </constraints>
                             </view>
                         </subviews>
-                        <color key="backgroundColor" white="0.66666666666666663" alpha="1" colorSpace="calibratedWhite"/>
+                        <color key="backgroundColor" white="0.0" alpha="1" colorSpace="calibratedWhite"/>
                         <constraints>
+                            <constraint firstItem="fmd-no-K9y" firstAttribute="width" secondItem="ugf-cP-Xym" secondAttribute="width" id="2DU-RD-89h"/>
                             <constraint firstItem="ugf-cP-Xym" firstAttribute="width" secondItem="8bC-Xf-vdC" secondAttribute="width" id="9Rc-yJ-Sef"/>
+                            <constraint firstItem="fmd-no-K9y" firstAttribute="top" secondItem="ugf-cP-Xym" secondAttribute="top" id="B6k-2D-uva"/>
                             <constraint firstItem="ugf-cP-Xym" firstAttribute="height" secondItem="8bC-Xf-vdC" secondAttribute="height" id="Fdr-7o-UMg"/>
                             <constraint firstItem="auB-80-HGN" firstAttribute="top" secondItem="y3c-jy-aDJ" secondAttribute="bottom" constant="152" id="OL5-YL-y5w"/>
+                            <constraint firstItem="fmd-no-K9y" firstAttribute="leading" secondItem="ugf-cP-Xym" secondAttribute="leading" id="dnS-rS-qJk"/>
                             <constraint firstAttribute="centerX" secondItem="ugf-cP-Xym" secondAttribute="centerX" id="jmS-gz-WTl"/>
                             <constraint firstAttribute="centerX" secondItem="auB-80-HGN" secondAttribute="centerX" id="n3W-SG-6wR"/>
                             <constraint firstAttribute="centerY" secondItem="ugf-cP-Xym" secondAttribute="centerY" id="v6U-iy-M6b"/>
+                            <constraint firstItem="fmd-no-K9y" firstAttribute="height" secondItem="ugf-cP-Xym" secondAttribute="height" id="xBf-7U-2Oz"/>
                         </constraints>
                     </view>
                     <navigationItem key="navigationItem" id="4Cg-dx-aUn"/>
@@ -129,4 +137,7 @@
             <point key="canvasLocation" x="-568" y="136"/>
         </scene>
     </scenes>
+    <resources>
+        <image name="bgl.jpg" width="1932" height="1289"/>
+    </resources>
 </document>

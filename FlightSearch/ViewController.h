@@ -10,6 +10,7 @@
 #import "FlightsTableViewController.h"
 #import "FlightStatsCommunicator.h"
 #import "FlightStatsCommunicatorDelegate.h"
+#import "FlightStatusSearch.h"
 
 @interface ViewController : UIViewController<FlightStatsCommunicatorDelegate>{
     IBOutlet UITextField *airlineCodeTextField;

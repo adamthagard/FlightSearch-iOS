@@ -38,4 +38,8 @@
 @property (strong, nonatomic) UIView *lineView1;
 @property (strong, nonatomic) UIView *lineView2;
 
+@property (strong, nonatomic) UIImageView *airplaneImageView;
+
+- (void)drawFlightVisualWithCellFrame:(CGRect)cellFrame progress:(float)progress;
+
 @end
