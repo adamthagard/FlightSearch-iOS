@@ -115,6 +115,8 @@
                         <outlet property="airlineCodeTextField" destination="DfC-n6-qEw" id="bVX-CX-ugq"/>
                         <outlet property="dateTextField" destination="5Jq-9i-FgC" id="ssi-Az-LkS"/>
                         <outlet property="flightNumberTextField" destination="S3S-fy-io8" id="B1w-RW-B2p"/>
+                        <outlet property="inputFormView" destination="auB-80-HGN" id="nKb-EB-Rq4"/>
+                        <outlet property="inputFormViewTopSpaceConstraint" destination="OL5-YL-y5w" id="ajl-br-brn"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="dkx-z0-nzr" sceneMemberID="firstResponder"/>

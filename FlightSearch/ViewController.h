@@ -17,9 +17,14 @@
     IBOutlet UITextField *flightNumberTextField;
     IBOutlet UITextField *dateTextField;
    
+    IBOutlet UIView *inputFormView;
+
+    IBOutlet NSLayoutConstraint *inputFormViewTopSpaceConstraint;
+    
     UIView *loadingView;
     
     NSDate *selectedDate;
+    
 }
 
 @property (strong, nonatomic) FlightStatsCommunicator *communicator;

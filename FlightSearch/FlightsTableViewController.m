@@ -197,7 +197,7 @@ static NSString *CellIdentifier = @"CellIdentifier";
 
 
 -(void) didRotateFromInterfaceOrientation:(UIInterfaceOrientation)fromInterfaceOrientation{
-    NSLog(@"ROTATE!");
+    NSLog(@"Screen Rotated");
     
     [self.tableView reloadData];
 }

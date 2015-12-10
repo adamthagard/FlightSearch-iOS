@@ -79,6 +79,8 @@
     [super viewWillAppear:animated];
     
     [loadingView removeFromSuperview];
+    
+    [self updateInputFormViewLocation:NO];
 }
 - (void)viewWillDisappear:(BOOL)animated {
     [self.navigationController setNavigationBarHidden:NO animated:animated];
@@ -198,5 +200,27 @@
     }
 }
 
+
+-(void) willRotateToInterfaceOrientation:(UIInterfaceOrientation)toInterfaceOrientation duration:(NSTimeInterval)duration{
+    NSLog(@"Screen Rotating");
+    
+    [self updateInputFormViewLocation:YES];
+}
+
+// slide up input form view in landscape mode so keyboard doesnt cover view
+-(void)updateInputFormViewLocation:(BOOL)rotating{
+    
+    float screenHeight = [[UIScreen mainScreen] bounds].size.height;
+
+    if (rotating)
+        screenHeight = [[UIScreen mainScreen] bounds].size.width;
+    
+    NSLog(@"screenHeight: %f", screenHeight);
+    
+    if (screenHeight < 500)
+        inputFormViewTopSpaceConstraint.constant = 62;
+    else
+        inputFormViewTopSpaceConstraint.constant = 152;
+}
 
 @end
