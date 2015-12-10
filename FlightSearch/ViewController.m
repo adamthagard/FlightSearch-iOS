@@ -104,12 +104,8 @@
     newFlightStatusSearch.flightNumber = flightNumberTextField.text;
     newFlightStatusSearch.searchDate = selectedDate;
     
-    // load latest search
-    NSUserDefaults *defaults = [NSUserDefaults standardUserDefaults];
-    NSData *encodedObject = [defaults objectForKey:@"LastFlightSearch"];
-    FlightStatusSearch *loadedFlightStatusSearch = [NSKeyedUnarchiver unarchiveObjectWithData:encodedObject];
-    NSLog(@"retrieved search: %@ with flight: %@%@",loadedFlightStatusSearch,loadedFlightStatusSearch.airlineCode,loadedFlightStatusSearch.flightNumber);
-
+    FlightStatusSearch *loadedFlightStatusSearch = [self loadLatestSearch];
+    
     //check if redoing the latest search
     if ([newFlightStatusSearch isSameSearchAs:loadedFlightStatusSearch]){
         NSLog(@"redoing latest search");
@@ -138,6 +134,19 @@
         [self.view addSubview:loadingView];
     }
 }
+
+
+- (FlightStatusSearch*)loadLatestSearch{
+    // load latest search
+    NSUserDefaults *defaults = [NSUserDefaults standardUserDefaults];
+    NSData *encodedObject = [defaults objectForKey:@"LastFlightSearch"];
+    FlightStatusSearch *loadedFlightStatusSearch = [NSKeyedUnarchiver unarchiveObjectWithData:encodedObject];
+    NSLog(@"retrieved search: %@ with flight: %@%@",loadedFlightStatusSearch,loadedFlightStatusSearch.airlineCode,loadedFlightStatusSearch.flightNumber);
+
+    return loadedFlightStatusSearch;
+}
+
+
 
 - (IBAction)resignKeyboard:(id)sender{
     [self.view endEditing:YES];

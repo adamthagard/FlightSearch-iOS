@@ -41,5 +41,6 @@
 @property (strong, nonatomic) UIImageView *airplaneImageView;
 
 - (void)drawFlightVisualWithCellFrame:(CGRect)cellFrame progress:(float)progress;
+- (void)updatePunctualityColor:(NSString*)punctuality;
 
 @end

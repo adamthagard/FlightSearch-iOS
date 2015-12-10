@@ -24,6 +24,7 @@
 
 @property (strong, nonatomic) FlightStatsCommunicator *communicator;
 
+- (FlightStatusSearch*)loadLatestSearch;
 
 @end
 

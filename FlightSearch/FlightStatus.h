@@ -11,6 +11,7 @@
 @interface FlightStatus : NSObject
 
 @property (nonatomic,strong) NSString *status;
+@property (nonatomic,strong) NSString *punctuality;
 
 @property (nonatomic,strong) NSString *departureAirport;
 @property (nonatomic,strong) NSString *arrivalAirport;

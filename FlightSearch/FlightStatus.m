@@ -15,6 +15,8 @@
 - (void)encodeWithCoder:(NSCoder *)encoder {
     //Encode properties, other class variables, etc
     [encoder encodeObject:self.status forKey:@"status"];
+    [encoder encodeObject:self.punctuality forKey:@"punctuality"];
+
     [encoder encodeObject:self.departureAirport forKey:@"departureAirport"];
     [encoder encodeObject:self.arrivalAirport forKey:@"arrivalAirport"];
     [encoder encodeObject:self.departureCity forKey:@"departureCity"];
@@ -40,6 +42,8 @@
     if((self = [super init])) {
         //decode properties, other class vars
         self.status = [decoder decodeObjectForKey:@"status"];
+        self.punctuality = [decoder decodeObjectForKey:@"punctuality"];
+
         self.departureAirport = [decoder decodeObjectForKey:@"departureAirport"];
         self.arrivalAirport = [decoder decodeObjectForKey:@"arrivalAirport"];
         self.departureCity = [decoder decodeObjectForKey:@"departureCity"];

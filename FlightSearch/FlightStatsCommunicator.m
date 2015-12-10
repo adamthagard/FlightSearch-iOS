@@ -100,70 +100,8 @@
 
     for (NSDictionary *currFlightStatusJSON in flightStatusesJSON){
         
-        NSDictionary *operationalTimes = [currFlightStatusJSON objectForKey:@"operationalTimes"];
-        NSDictionary *airportResources = [currFlightStatusJSON objectForKey:@"airportResources"];
-
-        FlightStatus *flightStatus = [[FlightStatus alloc] init];
-        
-        flightStatus.status = [flightStatusDescriptions objectForKey:[currFlightStatusJSON objectForKey:@"status"]];
-
-        flightStatus.flightProgress = 0;
-        if ([flightStatus.status isEqualToString:@"Landed"])
-            flightStatus.flightProgress = 1;
-        else if ([flightStatus.status isEqualToString:@"En-Route"]){
-            NSDate *flightStartUTC = [flightStatsUTCDF dateFromString:[[operationalTimes objectForKey:@"estimatedGateDeparture"] objectForKey:@"dateUtc"]];
-            NSDate *flightEndUTC = [flightStatsUTCDF dateFromString:[[operationalTimes objectForKey:@"estimatedGateArrival"] objectForKey:@"dateUtc"]];
-            NSDate *currTimeUTC = [NSDate date];
-
-            NSLog(@"flightStartUTC: %@",flightStartUTC);
-            NSLog(@"flightEndUTC: %@",flightEndUTC);
-            NSLog(@"currTimeUTC: %@",currTimeUTC);
-            
-            NSTimeInterval flightDuration = [flightEndUTC timeIntervalSinceDate:flightStartUTC];
-            NSTimeInterval flightElapsed = [currTimeUTC timeIntervalSinceDate:flightStartUTC];
-            flightStatus.flightProgress = flightElapsed / flightDuration;
-         
-            NSTimeInterval timeRemaining = [flightEndUTC timeIntervalSinceDate:currTimeUTC];
-            int hoursRemaining = timeRemaining / 3600;
-            int minutesRemaining = (timeRemaining - hoursRemaining*3600)/60;
-            
-            flightStatus.status = [NSString stringWithFormat:@"%@ (%d hours, %d minutes remaining)",flightStatus.status,hoursRemaining,minutesRemaining];
-        }
-        
-        
-        flightStatus.departureAirport = [currFlightStatusJSON objectForKey:@"departureAirportFsCode"];
-        flightStatus.arrivalAirport = [currFlightStatusJSON objectForKey:@"arrivalAirportFsCode"];
-
-        flightStatus.departureCity = [airportCitiesDict objectForKey:flightStatus.departureAirport];
-        flightStatus.arrivalCity = [airportCitiesDict objectForKey:flightStatus.arrivalAirport];
-
-        
-        
-        NSDate *departureScheduledDate = [flightStatsDF dateFromString:[[operationalTimes objectForKey:@"scheduledGateDeparture"] objectForKey:@"dateLocal"]];
-        flightStatus.departureScheduledTime = [timeDF stringFromDate:departureScheduledDate];
-        
-        NSDate *departureDate = departureScheduledDate;
-        if ([operationalTimes objectForKey:@"estimatedGateDeparture"])
-            departureDate = [flightStatsDF dateFromString:[[operationalTimes objectForKey:@"estimatedGateDeparture"] objectForKey:@"dateLocal"]];
-        flightStatus.departureDate = [dayDF stringFromDate:departureDate];
-        flightStatus.departureTime = [timeDF stringFromDate:departureDate];
-        
-
-        NSDate *arrivalScheduledDate = [flightStatsDF dateFromString:[[operationalTimes objectForKey:@"scheduledGateArrival"] objectForKey:@"dateLocal"]];
-        flightStatus.arrivalScheduledTime = [timeDF stringFromDate:arrivalScheduledDate];
-        
-        NSDate *arrivalDate = arrivalScheduledDate;
-        if ([operationalTimes objectForKey:@"estimatedGateArrival"])
-            arrivalDate = [flightStatsDF dateFromString:[[operationalTimes objectForKey:@"estimatedGateArrival"] objectForKey:@"dateLocal"]];
-        flightStatus.arrivalDate = [dayDF stringFromDate:arrivalDate];
-        flightStatus.arrivalTime = [timeDF stringFromDate:arrivalDate];
-        
-        
-        flightStatus.departureTerminal = ([airportResources objectForKey:@"departureTerminal"]) ? [airportResources objectForKey:@"departureTerminal"] : @"N/A";
-        flightStatus.departureGate = ([airportResources objectForKey:@"departureGate"]) ? [airportResources objectForKey:@"departureGate"] : @"N/A";
-        flightStatus.arrivalTerminal = ([airportResources objectForKey:@"arrivalTerminal"]) ? [airportResources objectForKey:@"arrivalTerminal"] : @"N/A";
-        flightStatus.arrivalGate = ([airportResources objectForKey:@"arrivalGate"]) ? [airportResources objectForKey:@"arrivalGate"] : @"N/A";
-
+        // convert the JSON into a flight status object
+        FlightStatus *flightStatus = [self flightStatusFromJSON:currFlightStatusJSON withAirports:airportCitiesDict];
 
         // add the new flight status to the array of statuses
         [flightStatusesArray addObject:flightStatus];
@@ -179,6 +117,82 @@
         [self.delegate didReceiveFlightStatuses:flightStatusSearch];
     });
 }
+
+
+- (FlightStatus*)flightStatusFromJSON:(NSDictionary*)currFlightStatusJSON withAirports:(NSDictionary*)airportCitiesDict{
+    NSDictionary *operationalTimes = [currFlightStatusJSON objectForKey:@"operationalTimes"];
+    NSDictionary *airportResources = [currFlightStatusJSON objectForKey:@"airportResources"];
+    
+    FlightStatus *flightStatus = [[FlightStatus alloc] init];
+    
+    flightStatus.status = [flightStatusDescriptions objectForKey:[currFlightStatusJSON objectForKey:@"status"]];
+    
+    flightStatus.flightProgress = 0;
+    if ([flightStatus.status isEqualToString:@"Landed"])
+        flightStatus.flightProgress = 1;
+    else if ([flightStatus.status isEqualToString:@"En-Route"]){
+        NSDate *flightStartUTC = [flightStatsUTCDF dateFromString:[[operationalTimes objectForKey:@"estimatedGateDeparture"] objectForKey:@"dateUtc"]];
+        NSDate *flightEndUTC = [flightStatsUTCDF dateFromString:[[operationalTimes objectForKey:@"estimatedGateArrival"] objectForKey:@"dateUtc"]];
+        NSDate *currTimeUTC = [NSDate date];
+        
+        NSLog(@"flightStartUTC: %@",flightStartUTC);
+        NSLog(@"flightEndUTC: %@",flightEndUTC);
+        NSLog(@"currTimeUTC: %@",currTimeUTC);
+        
+        NSTimeInterval flightDuration = [flightEndUTC timeIntervalSinceDate:flightStartUTC];
+        NSTimeInterval flightElapsed = [currTimeUTC timeIntervalSinceDate:flightStartUTC];
+        flightStatus.flightProgress = flightElapsed / flightDuration;
+        
+        NSTimeInterval timeRemaining = [flightEndUTC timeIntervalSinceDate:currTimeUTC];
+        int hoursRemaining = timeRemaining / 3600;
+        int minutesRemaining = (timeRemaining - hoursRemaining*3600)/60;
+        
+        flightStatus.status = [NSString stringWithFormat:@"%@ (%d hours, %d minutes remaining)",flightStatus.status,hoursRemaining,minutesRemaining];
+    }
+    
+    
+    flightStatus.departureAirport = [currFlightStatusJSON objectForKey:@"departureAirportFsCode"];
+    flightStatus.arrivalAirport = [currFlightStatusJSON objectForKey:@"arrivalAirportFsCode"];
+    
+    flightStatus.departureCity = [airportCitiesDict objectForKey:flightStatus.departureAirport];
+    flightStatus.arrivalCity = [airportCitiesDict objectForKey:flightStatus.arrivalAirport];
+    
+    
+    
+    NSDate *departureScheduledDate = [flightStatsDF dateFromString:[[operationalTimes objectForKey:@"scheduledGateDeparture"] objectForKey:@"dateLocal"]];
+    flightStatus.departureScheduledTime = [timeDF stringFromDate:departureScheduledDate];
+    
+    NSDate *departureDate = departureScheduledDate;
+    if ([operationalTimes objectForKey:@"estimatedGateDeparture"])
+        departureDate = [flightStatsDF dateFromString:[[operationalTimes objectForKey:@"estimatedGateDeparture"] objectForKey:@"dateLocal"]];
+    flightStatus.departureDate = [dayDF stringFromDate:departureDate];
+    flightStatus.departureTime = [timeDF stringFromDate:departureDate];
+    
+    
+    NSDate *arrivalScheduledDate = [flightStatsDF dateFromString:[[operationalTimes objectForKey:@"scheduledGateArrival"] objectForKey:@"dateLocal"]];
+    flightStatus.arrivalScheduledTime = [timeDF stringFromDate:arrivalScheduledDate];
+    
+    NSDate *arrivalDate = arrivalScheduledDate;
+    if ([operationalTimes objectForKey:@"estimatedGateArrival"])
+        arrivalDate = [flightStatsDF dateFromString:[[operationalTimes objectForKey:@"estimatedGateArrival"] objectForKey:@"dateLocal"]];
+    flightStatus.arrivalDate = [dayDF stringFromDate:arrivalDate];
+    flightStatus.arrivalTime = [timeDF stringFromDate:arrivalDate];
+    
+    // flight is delayed if arrival is more than 10 mins late
+    if ([arrivalDate timeIntervalSinceDate:arrivalScheduledDate] > 10*60)
+        flightStatus.punctuality = @"Delayed";
+    else
+        flightStatus.punctuality = @"On time";
+    
+    
+    flightStatus.departureTerminal = ([airportResources objectForKey:@"departureTerminal"]) ? [airportResources objectForKey:@"departureTerminal"] : @"N/A";
+    flightStatus.departureGate = ([airportResources objectForKey:@"departureGate"]) ? [airportResources objectForKey:@"departureGate"] : @"N/A";
+    flightStatus.arrivalTerminal = ([airportResources objectForKey:@"arrivalTerminal"]) ? [airportResources objectForKey:@"arrivalTerminal"] : @"N/A";
+    flightStatus.arrivalGate = ([airportResources objectForKey:@"arrivalGate"]) ? [airportResources objectForKey:@"arrivalGate"] : @"N/A";
+
+    return flightStatus;
+}
+
 
 
 

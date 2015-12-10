@@ -24,5 +24,6 @@
 @property (weak, nonatomic) id<FlightStatsCommunicatorDelegate> delegate;
 
 - (void)searchFlights:(FlightStatusSearch*)flightStatusSearch;
+- (FlightStatus*)flightStatusFromJSON:(NSDictionary*)currFlightStatusJSON withAirports:(NSDictionary*)airportCitiesDict;
 
 @end

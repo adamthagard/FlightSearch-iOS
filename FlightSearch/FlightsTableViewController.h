@@ -13,13 +13,15 @@
 #import "FlightStatsCommunicator.h"
 #import "FlightStatsCommunicatorDelegate.h"
 
-@interface FlightsTableViewController : UITableViewController<FlightStatsCommunicatorDelegate>{
-    FlightStatusSearch *flightStatusSearch;
-}
+@interface FlightsTableViewController : UITableViewController<FlightStatsCommunicatorDelegate>
+
+@property (nonatomic, strong) FlightStatusSearch *flightStatusSearch;
 
 @property (strong, nonatomic) FlightStatsCommunicator *communicator;
 @property (nonatomic, strong) UIRefreshControl *refreshControl;
 
+
 - (id)initWithFlightSearchResults:(FlightStatusSearch*)newFlightStatusSearchResults andRefresh:(BOOL)shouldRefresh;
+- (void) saveFlightSearch;
 
 @end

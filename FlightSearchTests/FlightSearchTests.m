@@ -1,15 +1,21 @@
 //
 //  FlightSearchTests.m
-//  FlightSearchTests
+//  FlightSearch
 //
-//  Created by Adam Thagard on 2015-12-03.
+//  Created by Adam Thagard on 2015-12-10.
 //  Copyright (c) 2015 adamthagard. All rights reserved.
 //
 
 #import <UIKit/UIKit.h>
 #import <XCTest/XCTest.h>
 
+#import "ViewController.h"
+#import "FlightsTableViewController.h"
+
 @interface FlightSearchTests : XCTestCase
+
+@property (nonatomic) ViewController *vcToTest;
+@property (nonatomic) FlightsTableViewController *flightsTVCToTest;
 
 @end
 
@@ -17,7 +23,9 @@
 
 - (void)setUp {
     [super setUp];
-    // Put setup code here. This method is called before the invocation of each test method in the class.
+
+    self.vcToTest = [[ViewController alloc] init];
+    self.flightsTVCToTest = [[FlightsTableViewController alloc] init];
 }
 
 - (void)tearDown {
@@ -25,16 +33,24 @@
     [super tearDown];
 }
 
-- (void)testExample {
-    // This is an example of a functional test case.
-    XCTAssert(YES, @"Pass");
+
+// test that the custom FlightStatusSearch object is saved and loaded from NSUserDefaults
+- (void)testOfflineSave {
+    
+    FlightStatusSearch *testSearch = [[FlightStatusSearch alloc] init];
+    testSearch.airlineCode = @"AA";
+    testSearch.flightNumber = @"138";
+
+    [self.flightsTVCToTest setFlightStatusSearch:testSearch];
+    
+    [self.flightsTVCToTest saveFlightSearch];
+    
+    FlightStatusSearch *loadedSearch = [self.vcToTest loadLatestSearch];
+    
+    NSLog(@"LOADED SEARCH: %@-%@",loadedSearch.airlineCode,loadedSearch.flightNumber);
+    
+    XCTAssertEqualObjects(testSearch.airlineCode, loadedSearch.airlineCode,@"Offline Save Failed");
 }
 
-- (void)testPerformanceExample {
-    // This is an example of a performance test case.
-    [self measureBlock:^{
-        // Put the code you want to measure the time of here.
-    }];
-}
 
 @end

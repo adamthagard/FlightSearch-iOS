@@ -20,7 +20,7 @@ static NSString *CellIdentifier = @"CellIdentifier";
     self = [super init];
     if (self) {
         
-        flightStatusSearch = [[FlightStatusSearch alloc] initWithFlightStatusSearch:newFlightStatusSearchResults];
+        self.flightStatusSearch = [[FlightStatusSearch alloc] initWithFlightStatusSearch:newFlightStatusSearchResults];
         
         [self saveFlightSearch];
         
@@ -58,7 +58,7 @@ static NSString *CellIdentifier = @"CellIdentifier";
     [super viewWillAppear:animated];
     
     // set up navbar title
-    NSString *titleText = [NSString stringWithFormat:@"%@%@",flightStatusSearch.airlineCode,flightStatusSearch.flightNumber];
+    NSString *titleText = [NSString stringWithFormat:@"%@%@",self.flightStatusSearch.airlineCode,self.flightStatusSearch.flightNumber];
     CGRect frame = CGRectMake(0, 0, [titleText sizeWithAttributes:@{NSFontAttributeName: [UIFont boldSystemFontOfSize:24.0]}].width, 44);
     UILabel *label = [[UILabel alloc] initWithFrame:frame];
     label.backgroundColor = [UIColor clearColor];
@@ -80,9 +80,9 @@ static NSString *CellIdentifier = @"CellIdentifier";
 }
 
 - (void) saveFlightSearch{
-    NSLog(@"saving search: %@ with flight: %@%@",flightStatusSearch,flightStatusSearch.airlineCode,flightStatusSearch.flightNumber);
+    NSLog(@"saving search: %@ with flight: %@%@",self.flightStatusSearch,self.flightStatusSearch.airlineCode,self.flightStatusSearch.flightNumber);
 
-    NSData *encodedObject = [NSKeyedArchiver archivedDataWithRootObject:flightStatusSearch];
+    NSData *encodedObject = [NSKeyedArchiver archivedDataWithRootObject:self.flightStatusSearch];
     NSUserDefaults *defaults = [NSUserDefaults standardUserDefaults];
     [defaults setObject:encodedObject forKey:@"LastFlightSearch"];
     [defaults synchronize];
@@ -95,7 +95,7 @@ static NSString *CellIdentifier = @"CellIdentifier";
     
     self.refreshControl.attributedTitle = [[NSAttributedString alloc] initWithString:@"Refreshing..."];
     
-    [self.communicator searchFlights:flightStatusSearch];
+    [self.communicator searchFlights:self.flightStatusSearch];
 }
 
 
@@ -103,7 +103,7 @@ static NSString *CellIdentifier = @"CellIdentifier";
     // update last updated label
     NSDateFormatter *formatter = [[NSDateFormatter alloc] init];
     [formatter setDateFormat:@"MMM d, h:mm a"];
-    NSString *lastUpdated = [NSString stringWithFormat:@"Last updated on %@",[formatter stringFromDate:flightStatusSearch.lastUpdated]];
+    NSString *lastUpdated = [NSString stringWithFormat:@"Last updated on %@",[formatter stringFromDate:self.flightStatusSearch.lastUpdated]];
     self.refreshControl.attributedTitle = [[NSAttributedString alloc] initWithString:lastUpdated];
 }
 
@@ -111,7 +111,7 @@ static NSString *CellIdentifier = @"CellIdentifier";
 
 - (void)didReceiveFlightStatuses:(FlightStatusSearch *)completedFlightStatusSearch{
     
-    flightStatusSearch = completedFlightStatusSearch;
+    self.flightStatusSearch = completedFlightStatusSearch;
     [self saveFlightSearch];
 
     [self.tableView reloadData];
@@ -155,7 +155,7 @@ static NSString *CellIdentifier = @"CellIdentifier";
 
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section {
     // Return the number of rows in the section.
-    return [flightStatusSearch.flightStatusesArray count];
+    return [self.flightStatusSearch.flightStatusesArray count];
 }
 
 
@@ -163,7 +163,7 @@ static NSString *CellIdentifier = @"CellIdentifier";
     FlightStatusTableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:CellIdentifier forIndexPath:indexPath];
     
     // Configure the cell...
-    NSArray *flightStatuses = flightStatusSearch.flightStatusesArray;
+    NSArray *flightStatuses = self.flightStatusSearch.flightStatusesArray;
     
     [cell.statusLabel setText:[NSString stringWithFormat:@"%@",[(FlightStatus*)[flightStatuses objectAtIndex:indexPath.row] status]]];
     
@@ -188,6 +188,8 @@ static NSString *CellIdentifier = @"CellIdentifier";
     cell.selectionStyle = UITableViewCellSelectionStyleNone;
 
     [cell drawFlightVisualWithCellFrame:cell.frame progress:[(FlightStatus*)[flightStatuses objectAtIndex:indexPath.row] flightProgress]];
+    
+    [cell updatePunctualityColor:[(FlightStatus*)[flightStatuses objectAtIndex:indexPath.row] punctuality]];
     
     return cell;
 }

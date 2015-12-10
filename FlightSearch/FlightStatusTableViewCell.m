@@ -220,6 +220,26 @@
     [self.airplaneImageView setFrame:CGRectMake(currX,centerY-AIRPLANE_IMAGE_SIZE/2,AIRPLANE_IMAGE_SIZE,AIRPLANE_IMAGE_SIZE)];
 }
 
+
+- (void)updatePunctualityColor:(NSString*)punctuality{
+    
+    UIColor *myColor = [UIColor colorWithRed:67.0/255.0 green:148.0/255.0 blue:111.0/255.0 alpha:1.0];
+    [self.arrivalTimeLabel setTextColor:[UIColor blackColor]];
+
+    if ([punctuality isEqualToString:@"Delayed"]){
+        myColor = [UIColor colorWithRed:221.0/255.0 green:75.0/255.0 blue:56.0/255.0 alpha:1.0];
+        [self.arrivalTimeLabel setTextColor:myColor];
+    }
+
+    [self.statusLabel setTextColor:myColor];
+    self.circleView1.backgroundColor = myColor;
+    self.lineView1.backgroundColor = myColor;
+    self.airplaneImageView.tintColor = myColor;
+
+
+}
+
+
 - (void)awakeFromNib {
     // Initialization code
 }
