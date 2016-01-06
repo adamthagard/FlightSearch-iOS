@@ -46,9 +46,7 @@
     [self.flightsTVCToTest saveFlightSearch];
     
     FlightStatusSearch *loadedSearch = [self.vcToTest loadLatestSearch];
-    
-    NSLog(@"LOADED SEARCH: %@-%@",loadedSearch.airlineCode,loadedSearch.flightNumber);
-    
+        
     XCTAssertEqualObjects(testSearch.airlineCode, loadedSearch.airlineCode,@"Offline Save Failed");
 }
 
