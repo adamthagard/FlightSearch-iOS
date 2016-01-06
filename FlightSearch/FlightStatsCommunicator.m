@@ -8,6 +8,7 @@
 
 #import "FlightStatsCommunicator.h"
 
+// 30 day evaluation account (expires Jan 4, 2016)
 #define APP_KEY @"36550fa3c22e6d88762d8efc1923a952"
 #define APP_ID @"5a72befd"
 
