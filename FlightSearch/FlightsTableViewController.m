@@ -29,6 +29,8 @@ static NSString *CellIdentifier = @"CellIdentifier";
 
             [self refresh];
         }
+        
+
     }
     return self;
 }
@@ -47,11 +49,18 @@ static NSString *CellIdentifier = @"CellIdentifier";
     self.refreshControl = [[UIRefreshControl alloc] init];
     [self.refreshControl addTarget:self action:@selector(refresh) forControlEvents:UIControlEventValueChanged];
     [self.tableView addSubview:self.refreshControl]; //assumes tableView is @property
+
+    
     
     // initialize communicator to interact with flight stats API and return results here
     _communicator = [[FlightStatsCommunicator alloc] init];
     _communicator.delegate = self;
 }
+
+-(void)viewDidAppear:(BOOL)animated{
+    [self updateLastUpdatedLabel];
+}
+
 
 - (void)viewWillAppear:(BOOL)animated
 {
@@ -70,7 +79,6 @@ static NSString *CellIdentifier = @"CellIdentifier";
     
     [self.navigationController.navigationBar setTintColor:[UIColor darkGrayColor]];
     
-    [self updateLastUpdatedLabel];
 }
 
 
